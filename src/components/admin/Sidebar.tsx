@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import {
   IcoHome, IcoCoins, IcoUsers, IcoPin, IcoLandmark, IcoChart, IcoStore,
 } from '@/components/ui/Icons'
-import { ChevronsLeft, ChevronsRight, X, FileText } from 'lucide-react'
+import { ChevronsLeft, ChevronsRight, X, FileText, FileSignature } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 
 interface SidebarProps {
@@ -31,9 +31,10 @@ const navItems: NavItem[] = [
   { id: 'recettes',      label: 'Recettes',       icon: IcoCoins,    href: '/admin/recettes',      section: 'pilotage' },
   { id: 'contribuables', label: 'Contribuables',  icon: IcoStore,    href: '/admin/contribuables', section: 'pilotage', count: 412 },
   { id: 'agents',        label: 'Agents',         icon: IcoUsers,    href: '/admin/agents',        section: 'pilotage', count: 18 },
-  { id: 'marches',       label: 'Marchés',        icon: IcoPin,      href: '/admin/marches',       section: 'pilotage' },
+  { id: 'marches',       label: 'Marches',        icon: IcoPin,      href: '/admin/marches',       section: 'pilotage' },
+  { id: 'actes',         label: 'Timbre actes',    icon: FileSignature, href: '/admin/actes',         section: 'pilotage' },
   { id: 'recouvrement',  label: 'Recouvrement',   icon: FileText,    href: '/admin/recouvrement',  section: 'conformite' },
-  { id: 'tresor',        label: 'Trésor Public',  icon: IcoLandmark, href: '/admin/tresor',        section: 'conformite' },
+  { id: 'tresor',        label: 'Tresor Public',  icon: IcoLandmark, href: '/admin/tresor',        section: 'conformite' },
   { id: 'rapports',      label: 'Rapports',       icon: IcoChart,    href: '/admin/rapports',      section: 'conformite' },
 ]
 
