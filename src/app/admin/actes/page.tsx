@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { FileUp, QRCode, Download, CheckCircle, Search } from 'lucide-react'
+import { FileUp, QrCode, Download, CheckCircle, Search } from 'lucide-react'
 
 interface Acte {
   id: string
@@ -237,7 +237,7 @@ QR: ${acte.qrCode}`
                         className="p-1.5 text-lagune-600 hover:bg-lagune-50 rounded-lg"
                         title="Generer QR code"
                       >
-                        <QRCode size={16} />
+                        <QrCode size={16} />
                       </button>
                     )}
                     {acte.qrCode && (
