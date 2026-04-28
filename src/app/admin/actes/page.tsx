@@ -150,7 +150,7 @@ QR: ${acte.qrCode}`
             {uploading ? (
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
-              <CheckCircle size={18} /> Confirmer
+              <><CheckCircle size={18} />Confirmer</>
             )}
           </button>
         </div>
