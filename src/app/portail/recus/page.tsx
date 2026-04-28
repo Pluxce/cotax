@@ -28,7 +28,7 @@ export default function RecusPage() {
       </header>
 
       <div className="mx-auto max-w-[560px] px-4 py-6">
-        <section className="bg-gradient-to-br from-lagune-900 to-lagune-700 p-6 rounded-2xl  relative overflow-hidden">
+        <section className="bg-gradient-to-br from-lagune-900 to-lagune-700 p-6 rounded-2xl relative overflow-hidden">
           <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url("/assets/pattern-kita.svg")', backgroundSize: '200px' }} />
           <div className="relative z-10 grid grid-cols-2 gap-6">
             <div>
@@ -49,30 +49,6 @@ export default function RecusPage() {
         <div className="mt-8 mb-4">
           <h2 className="text-xs font-bold uppercase tracking-widest text-ink-400">Historique journalier</h2>
         </div>
-        </div>
-      </header>
-
-      <div className="mx-auto max-w-[560px] px-4 py-6">
-        <section className="hero-surface p-6 rounded-3xl ">
-          <div className="relative z-10 grid grid-cols-2 gap-6">
-            <div>
-              <div className="t-micro text-white/60 font-bold uppercase tracking-widest mb-1.5">Collecte (Avril)</div>
-              <div className="t-h2 text-white !text-2xl font-mono">
-                {formatAmount(90000)} <span className="text-[12px] text-white/50 font-ui font-medium">F</span>
-              </div>
-            </div>
-            <div>
-              <div className="t-micro text-white/60 font-bold uppercase tracking-widest mb-1.5">Régularité</div>
-              <div className="t-h2 text-forest-200 !text-2xl font-mono">
-                6/7 <span className="text-[12px] text-white/50 font-ui font-medium">jours</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="mt-8 mb-4">
-          <h2 className="t-micro text-ink-400 font-bold uppercase tracking-widest">Historique journalier</h2>
-        </div>
 
         <section className="flex flex-col gap-3">
           {RECUS.map((receipt, index) =>
@@ -80,7 +56,7 @@ export default function RecusPage() {
               <Link
                 key={`${receipt.date}-${index}`}
                 href={`/v/${receipt.num.split('-').pop()}`}
-                className="section-card flex items-center gap-4 px-4 py-3.5 no-underline hover:border-lagune-300 transition-all  hover:shadow-elev-1 active:scale-[0.98]"
+                className="flex items-center gap-4 px-4 py-3.5 rounded-xl border border-ink-100 bg-white no-underline hover:border-lagune-300 transition-all"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest-100 text-forest-700">
                   <CheckCircle2 size={20} />
@@ -92,7 +68,7 @@ export default function RecusPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="t-amount text-[14px] font-bold text-ink-900">
+                  <span className="font-mono text-[14px] font-bold text-ink-900">
                     {formatAmount(receipt.amount)}
                   </span>
                   <ChevronRight size={14} className="text-ink-300" />
@@ -101,16 +77,16 @@ export default function RecusPage() {
             ) : (
               <div
                 key={`${receipt.date}-${index}`}
-                className="flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-terra-100 bg-terra-50 "
+                className="flex items-center gap-4 px-4 py-3.5 rounded-xl border border-terra-100 bg-terra-50"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-terra-100 text-terra-700">
                   <TriangleAlert size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-[14px] font-bold text-terra-950 leading-tight mb-0.5">{receipt.date}</div>
-                  <div className="text-[11px] text-terra-600 font-medium italic">Aucun paiement enregistré</div>
+                  <div className="text-[11px] text-terra-600 font-medium italic">Aucun paiement enregistre</div>
                 </div>
-                <span className="t-micro bg-terra-600 text-white px-2 py-0.5 rounded-pill font-bold ">
+                <span className="bg-terra-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
                   Manque
                 </span>
               </div>
@@ -118,13 +94,13 @@ export default function RecusPage() {
           )}
         </section>
 
-        <div className="mt-10 p-5 bg-paper-100 rounded-3xl border border-ink-100 text-center">
+        <div className="mt-10 p-5 bg-paper-100 rounded-2xl border border-ink-100 text-center">
           <p className="text-[13px] text-ink-500 leading-relaxed mb-4">
-            Besoin d&apos;une attestation fiscale globale pour votre activité ?
+            Besoin d&apos;une attestation fiscale globale pour votre activite ?
           </p>
           <Link 
             href="/portail" 
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-ink-900 text-[13px] font-bold rounded-xl border border-ink-200  hover:bg-paper-50 transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-ink-900 text-[13px] font-bold rounded-xl border border-ink-200 hover:bg-paper-50 transition-colors"
           >
             Aller sur mon profil
           </Link>
