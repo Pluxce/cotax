@@ -1,88 +1,135 @@
-import React from 'react'
 import Link from 'next/link'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { CheckCircle2, ChevronLeft, ChevronRight, TriangleAlert } from 'lucide-react'
+import { formatAmount } from '@/lib/mock-data'
 
 const RECUS = [
-  { date: '14 avril 2026', num: '2026-04-1847', psp: 'Orange Money', amount: 15_000, status: 'ok' },
-  { date: '13 avril 2026', num: '2026-04-1723', psp: 'Wave',         amount: 15_000, status: 'ok' },
-  { date: '12 avril 2026', num: '2026-04-1612', psp: 'MTN Money',    amount: 15_000, status: 'ok' },
-  { date: '11 avril 2026', num: '—',            psp: '—',            amount: 0,      status: 'miss' },
-  { date: '10 avril 2026', num: '2026-04-1388', psp: 'Orange Money', amount: 15_000, status: 'ok' },
-  { date: '09 avril 2026', num: '2026-04-1247', psp: 'Orange Money', amount: 15_000, status: 'ok' },
-  { date: '08 avril 2026', num: '2026-04-1102', psp: 'Wave',         amount: 15_000, status: 'ok' },
+  { date: '14 avril 2026', num: '2026-04-1847', psp: 'Orange Money', amount: 15000, status: 'ok' },
+  { date: '13 avril 2026', num: '2026-04-1723', psp: 'Wave', amount: 15000, status: 'ok' },
+  { date: '12 avril 2026', num: '2026-04-1612', psp: 'MTN Money', amount: 15000, status: 'ok' },
+  { date: '11 avril 2026', num: '-', psp: '-', amount: 0, status: 'miss' },
+  { date: '10 avril 2026', num: '2026-04-1388', psp: 'Orange Money', amount: 15000, status: 'ok' },
+  { date: '09 avril 2026', num: '2026-04-1247', psp: 'Orange Money', amount: 15000, status: 'ok' },
+  { date: '08 avril 2026', num: '2026-04-1102', psp: 'Wave', amount: 15000, status: 'ok' },
 ]
 
 export default function RecusPage() {
   return (
-    <>
-      {/* Header */}
-      <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}>
-        <Link href="/portail" style={{ display: 'flex', alignItems: 'center', color: 'var(--fg-2)' }}>
-          <ChevronLeft size={22} strokeWidth={1.5} />
-        </Link>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--fg-1)' }}>Mes reçus</div>
-          <div style={{ fontSize: 11, color: 'var(--fg-3)' }}>Étal B-214 · Adjoua Kouamé</div>
-        </div>
-      </div>
-
-      <div style={{ padding: '16px 20px' }}>
-        {/* Solde badge */}
-        <div style={{ background: 'linear-gradient(135deg, var(--lagune-900), var(--lagune-600))', borderRadius: 14, padding: '14px 16px', color: '#fff', marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/assets/pattern-kita.svg')", backgroundSize: 160, opacity: 0.1, filter: 'brightness(0) invert(1)' }} />
-          <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <div>
-              <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em', opacity: 0.65, fontWeight: 600, marginBottom: 4 }}>Ce mois</div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600 }}>90 000</div>
-              <div style={{ fontSize: 10, opacity: 0.65, marginTop: 2 }}>FCFA collectés</div>
-            </div>
-            <div>
-              <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em', opacity: 0.65, fontWeight: 600, marginBottom: 4 }}>Taux</div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600, color: '#6EE7A5' }}>6/7 j</div>
-              <div style={{ fontSize: 10, opacity: 0.65, marginTop: 2 }}>jours payés</div>
-            </div>
+    <main className="min-h-screen bg-paper-50">
+      <header className="border-b border-ink-200 bg-paper-0 px-4 py-[14px]">
+        <div className="mx-auto flex max-w-[560px] items-center gap-[10px]">
+          <Link href="/portail" className="flex items-center text-ink-700">
+            <ChevronLeft size={22} strokeWidth={1.5} />
+          </Link>
+          <div className="flex-1">
+            <div className="text-[15px] font-semibold text-ink-900">Mes recus</div>
+            <div className="text-[11px] text-ink-500">Etal B-214 · Adjoua Kouame</div>
           </div>
         </div>
+      </header>
 
-        {/* Receipt list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {RECUS.map((r, i) => (
-            r.status === 'ok' ? (
+      <div className="mx-auto max-w-[560px] px-4 py-6">
+        <section className="bg-gradient-to-br from-lagune-900 to-lagune-700 p-6 rounded-2xl  relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url("/assets/pattern-kita.svg")', backgroundSize: '200px' }} />
+          <div className="relative z-10 grid grid-cols-2 gap-6">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1.5">Collecte (Avril)</div>
+              <div className="text-2xl font-mono font-semibold text-white">
+                {formatAmount(90000)} <span className="text-xs text-white/50 font-ui font-medium">F</span>
+              </div>
+            </div>
+            <div>
+              <div className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1.5">Regularite</div>
+              <div className="text-2xl font-mono font-semibold text-forest-200">
+                6/7 <span className="text-xs text-white/50 font-ui font-medium">jours</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-8 mb-4">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-ink-400">Historique journalier</h2>
+        </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-[560px] px-4 py-6">
+        <section className="hero-surface p-6 rounded-3xl ">
+          <div className="relative z-10 grid grid-cols-2 gap-6">
+            <div>
+              <div className="t-micro text-white/60 font-bold uppercase tracking-widest mb-1.5">Collecte (Avril)</div>
+              <div className="t-h2 text-white !text-2xl font-mono">
+                {formatAmount(90000)} <span className="text-[12px] text-white/50 font-ui font-medium">F</span>
+              </div>
+            </div>
+            <div>
+              <div className="t-micro text-white/60 font-bold uppercase tracking-widest mb-1.5">Régularité</div>
+              <div className="t-h2 text-forest-200 !text-2xl font-mono">
+                6/7 <span className="text-[12px] text-white/50 font-ui font-medium">jours</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-8 mb-4">
+          <h2 className="t-micro text-ink-400 font-bold uppercase tracking-widest">Historique journalier</h2>
+        </div>
+
+        <section className="flex flex-col gap-3">
+          {RECUS.map((receipt, index) =>
+            receipt.status === 'ok' ? (
               <Link
-                key={i}
-                href={`/v/${r.num.split('-').pop()}`}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 12,
-                  padding: '12px 14px', background: 'var(--paper-0)',
-                  borderRadius: 12, border: '1px solid var(--border-subtle)',
-                  textDecoration: 'none',
-                }}
+                key={`${receipt.date}-${index}`}
+                href={`/v/${receipt.num.split('-').pop()}`}
+                className="section-card flex items-center gap-4 px-4 py-3.5 no-underline hover:border-lagune-300 transition-all  hover:shadow-elev-1 active:scale-[0.98]"
               >
-                <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--forest-100)', color: 'var(--forest-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  ✓
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest-100 text-forest-700">
+                  <CheckCircle2 size={20} />
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg-1)' }}>{r.date}</div>
-                  <div style={{ fontSize: 11, color: 'var(--fg-3)' }}>N° {r.num} · {r.psp}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[14px] font-bold text-ink-900 leading-tight mb-0.5">{receipt.date}</div>
+                  <div className="truncate text-[11px] text-ink-500 font-mono">
+                    N° {receipt.num} · {receipt.psp}
+                  </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600 }}>{r.amount.toLocaleString('fr-CI')}</span>
-                  <ChevronRight size={14} style={{ color: 'var(--fg-3)' }} />
+                <div className="flex items-center gap-2">
+                  <span className="t-amount text-[14px] font-bold text-ink-900">
+                    {formatAmount(receipt.amount)}
+                  </span>
+                  <ChevronRight size={14} className="text-ink-300" />
                 </div>
               </Link>
             ) : (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: 'var(--terra-50)', borderRadius: 12, border: '1px solid var(--terra-100)' }}>
-                <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--terra-100)', color: 'var(--terra-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 16 }}>!</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--terra-900)' }}>{r.date}</div>
-                  <div style={{ fontSize: 11, color: 'var(--terra-700)' }}>Aucun paiement enregistré</div>
+              <div
+                key={`${receipt.date}-${index}`}
+                className="flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-terra-100 bg-terra-50 "
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-terra-100 text-terra-700">
+                  <TriangleAlert size={20} />
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--terra-700)', background: 'var(--terra-100)', padding: '3px 8px', borderRadius: 999 }}>Manqué</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[14px] font-bold text-terra-950 leading-tight mb-0.5">{receipt.date}</div>
+                  <div className="text-[11px] text-terra-600 font-medium italic">Aucun paiement enregistré</div>
+                </div>
+                <span className="t-micro bg-terra-600 text-white px-2 py-0.5 rounded-pill font-bold ">
+                  Manque
+                </span>
               </div>
-            )
-          ))}
+            ),
+          )}
+        </section>
+
+        <div className="mt-10 p-5 bg-paper-100 rounded-3xl border border-ink-100 text-center">
+          <p className="text-[13px] text-ink-500 leading-relaxed mb-4">
+            Besoin d&apos;une attestation fiscale globale pour votre activité ?
+          </p>
+          <Link 
+            href="/portail" 
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-ink-900 text-[13px] font-bold rounded-xl border border-ink-200  hover:bg-paper-50 transition-colors"
+          >
+            Aller sur mon profil
+          </Link>
         </div>
       </div>
-    </>
+    </main>
   )
 }

@@ -1,5 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/Button'
+import { Pill } from '@/components/ui/Pill'
 import { BAREME_COMPLET, calculerTaxeEntreprenant } from '@/lib/taxes'
 import { TYPES_ACTIVITES, CATEGORIES_ACTIVITES, PIECES_COMMUNES } from '@/lib/activites'
 import { formatAmount } from '@/lib/mock-data'
@@ -113,56 +115,50 @@ function Topnav({ screen, go }: { screen: Screen; go: (s: Screen) => void }) {
   const { isTablet } = useBreakpoint()
 
   const NAV_ITEMS = [
-    { id: 'home'              as Screen, label: 'Accueil' },
-    { id: 'mes_activites'     as Screen, label: 'Mes activités' },
+    { id: 'home' as Screen, label: 'Accueil' },
+    { id: 'mes_activites' as Screen, label: 'Mes activités' },
     { id: 'nouvelle_activite' as Screen, label: 'Déclarer' },
-    { id: 'declaration'       as Screen, label: 'Payer mes taxes' },
-    { id: 'historique'        as Screen, label: 'Mes reçus' },
-    { id: 'bareme'            as Screen, label: 'Barème' },
+    { id: 'declaration' as Screen, label: 'Payer mes taxes' },
+    { id: 'historique' as Screen, label: 'Mes reçus' },
+    { id: 'bareme' as Screen, label: 'Barème' },
   ]
 
   return (
-    <nav style={{
-      background: 'var(--lagune-900)',
-      padding: isTablet ? '0 16px' : '0 24px',
-      minHeight: 58,
-      display: 'flex', alignItems: 'center', gap: 12,
-      position: 'sticky', top: 0, zIndex: 50,
-      flexWrap: 'wrap',
-    }}>
+    <nav className="sticky top-0 z-50 flex flex-wrap items-center gap-3 min-h-[58px] bg-lagune-900 px-4 md:px-6 ">
       {/* Logo */}
-      <button onClick={() => go('home')} style={{
-        display: 'flex', alignItems: 'center', gap: 10,
-        background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0,
-      }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/logo-cocody.png" alt="Cocody" style={{ width: 30, height: 30, borderRadius: 6, background: 'rgba(255,255,255,.9)', padding: 2 }} />
+      <button
+        onClick={() => go('home')}
+        className="flex items-center gap-2.5 bg-transparent border-none cursor-pointer p-0 shrink-0 hover:opacity-90 transition-opacity"
+      >
+        <div className="w-[30px] h-[30px] rounded-md bg-white/90 p-0.5 flex items-center justify-center">
+          <img src="/assets/logo-cocody.png" alt="Cocody" className="w-full h-full object-contain" />
+        </div>
         {!isTablet && (
-          <div style={{ textAlign: 'left' }}>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 600, color: '#fff' }}>CoTax</div>
-            <div style={{ fontSize: 10, color: 'rgba(255,255,255,.45)', letterSpacing: '.07em', textTransform: 'uppercase' }}>Portail · Cocody</div>
+          <div className="text-left">
+            <div className="font-display text-[17px] font-semibold text-white leading-tight">CoTax</div>
+            <div className="text-[10px] text-white/45 tracking-widest uppercase font-medium">Portail · Cocody</div>
           </div>
         )}
       </button>
 
       {/* Titre screen courant — mobile seulement */}
       {isTablet && (
-        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 16, color: '#fff', flex: 1, minWidth: 0, padding: '14px 0' }}>
-          {NAV_ITEMS.find(n => n.id === screen)?.label ?? 'CoTax Portail'}
+        <span className="font-display font-semibold text-base text-white flex-1 min-w-0 py-3.5">
+          {NAV_ITEMS.find((n) => n.id === screen)?.label ?? 'CoTax Portail'}
         </span>
       )}
 
       {/* Liens nav — desktop seulement */}
       {!isTablet && (
-        <div style={{ display: 'flex', gap: 2, marginLeft: 20, flex: 1 }}>
-          {NAV_ITEMS.map(item => (
-            <button key={item.id} onClick={() => go(item.id)} style={{
-              color: screen === item.id ? '#fff' : 'rgba(255,255,255,.65)',
-              padding: '6px 11px', borderRadius: 8, fontSize: 13, fontWeight: 500,
-              cursor: 'pointer', border: 0,
-              background: screen === item.id ? 'rgba(255,255,255,.15)' : 'transparent',
-              fontFamily: 'var(--font-ui)', transition: 'all .15s', whiteSpace: 'nowrap',
-            }}>
+        <div className="flex gap-0.5 ml-5 flex-1">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => go(item.id)}
+              className={`px-3 py-1.5 rounded-2xl text-[13px] font-medium cursor-pointer border-none transition-all font-ui whitespace-nowrap ${
+                screen === item.id ? 'text-white bg-white/15' : 'text-white/65 bg-transparent hover:text-white hover:bg-white/10'
+              }`}
+            >
               {item.label}
             </button>
           ))}
@@ -170,22 +166,20 @@ function Topnav({ screen, go }: { screen: Screen; go: (s: Screen) => void }) {
       )}
 
       {/* Actions droite */}
-      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, padding: isTablet ? '12px 0' : 0 }}>
+      <div className="ml-auto flex items-center gap-2 shrink-0 py-3 md:py-0">
         {!isTablet && (
-          <button onClick={() => go('declaration')} style={{
-            display: 'inline-flex', alignItems: 'center', gap: 7,
-            padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
-            background: 'var(--lagune-500)', color: '#fff', border: 'none', cursor: 'pointer',
-            fontFamily: 'var(--font-ui)', whiteSpace: 'nowrap',
-          }}>
+          <Button
+            onClick={() => go('declaration')}
+            variant="primary"
+            className="!px-3.5 !py-1.5 !text-[13px] bg-lagune-500 hover:bg-lagune-600"
+          >
             <FileText size={14} /> Payer
-          </button>
+          </Button>
         )}
-        <button onClick={() => go('profil')} style={{
-          width: 34, height: 34, borderRadius: '50%', background: 'var(--forest-600)', color: '#fff',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 12, flexShrink: 0,
-        }}>
+        <button
+          onClick={() => go('profil')}
+          className="w-[34px] h-[34px] rounded-full bg-forest-600 text-white flex items-center justify-center border-none cursor-pointer font-bold text-xs shrink-0 hover:bg-forest-700 transition-colors "
+        >
           AK
         </button>
       </div>
@@ -197,7 +191,6 @@ function Topnav({ screen, go }: { screen: Screen; go: (s: Screen) => void }) {
 function BottomNav({ screen, go }: { screen: Screen; go: (s: Screen) => void }) {
   const { isTablet } = useBreakpoint()
 
-  // Ne pas rendre du tout sur desktop → zéro risque de bloquer les clics
   if (!isTablet) return null
 
   const items: { id: Screen; label: string; icon: React.ReactNode }[] = [
@@ -205,28 +198,15 @@ function BottomNav({ screen, go }: { screen: Screen; go: (s: Screen) => void }) 
     { id: 'mes_activites', label: 'Activités',  icon: <Store size={22} strokeWidth={1.5} /> },
     { id: 'declaration',   label: 'Payer',      icon: <CreditCard size={22} strokeWidth={1.5} /> },
     { id: 'historique',    label: 'Reçus',      icon: <Receipt size={22} strokeWidth={1.5} /> },
-    { id: 'profil',        label: 'Profil',     icon: <div style={{ width: 24, height: 24, borderRadius: '50%', background: screen === 'profil' ? 'var(--lagune-600)' : 'var(--fg-3)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700 }}>AK</div> },
+    { id: 'profil',        label: 'Profil',     icon: <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${screen === 'profil' ? 'bg-lagune-600' : 'bg-ink-500'} text-white`}>AK</div> },
   ]
 
   return (
-    <nav style={{
-      position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
-      background: 'var(--paper-0)', borderTop: '1px solid var(--border)',
-      display: 'flex', justifyContent: 'space-around', alignItems: 'center',
-      padding: '6px 0',
-      paddingBottom: 'max(6px, env(safe-area-inset-bottom))',
-    }}>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-paper-0 border-t border-ink-200 flex justify-around items-center py-1.5 pb-[max(6px,env(safe-area-inset-bottom))] ">
       {items.map(({ id, label, icon }) => {
         const active = screen === id
         return (
-          <button key={id} onClick={() => go(id)} style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: active ? 'var(--lagune-600)' : 'var(--fg-3)',
-            fontFamily: 'var(--font-ui)', fontSize: 10, fontWeight: active ? 600 : 500,
-            padding: '4px 12px', borderRadius: 10, minWidth: 54,
-            transition: 'color 150ms',
-          }}>
+          <button key={id} onClick={() => go(id)} className={`flex flex-col items-center gap-0.5 bg-transparent border-none cursor-pointer px-3 py-1 rounded-2xl min-w-[54px] transition-colors font-ui text-[10px] ${active ? 'text-lagune-600 font-semibold' : 'text-ink-500 font-medium'}`}>
             {icon}
             {label}
           </button>
@@ -242,144 +222,98 @@ function ScreenHome({ go }: { go: (s: Screen) => void }) {
 
   return (
     <div>
-      {/* Hero */}
-      <div style={{
-        background: 'linear-gradient(160deg, var(--lagune-900) 0%, var(--lagune-700) 100%)',
-        padding: isMobile ? '40px 20px' : isTablet ? '52px 32px' : '64px 40px',
-        position: 'relative', overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: "url('/assets/pattern-kita.svg')",
-          backgroundSize: 260, opacity: .06,
-          filter: 'brightness(0) invert(1)', pointerEvents: 'none',
-        }} />
-        <div style={{ maxWidth: 780, margin: '0 auto', position: 'relative' }}>
-          <h1 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: isMobile ? 26 : isTablet ? 32 : 38,
-            fontWeight: 700,
-            color: '#fff', letterSpacing: '-.5px', marginBottom: 14, lineHeight: 1.2,
-          }}>
-            Déclarez, payez et suivez vos taxes municipales en ligne
+{/* Hero */}
+      <div className="bg-gradient-to-br from-lagune-900 to-lagune-700 px-5 py-10 md:py-16 md:px-10 lg:py-20 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url("/assets/pattern-kita.svg")', backgroundSize: '220px' }} />
+        <div className="max-w-[780px] mx-auto relative z-10">
+          <h1 className="text-4xl md:text-5xl font-display font-semibold text-white mb-4 leading-tight">
+            Declarez, payez et suivi vos taxes municipales en ligne
           </h1>
-          <p style={{ fontSize: isMobile ? 14 : 16, color: 'rgba(255,255,255,.75)', marginBottom: 28, lineHeight: 1.6 }}>
+          <p className="text-base md:text-lg text-white/60 mb-8 max-w-[600px]">
             Orange Money, MTN, Wave ou virement bancaire. Reçu PDF immédiat. Conforme au barème fiscal 2026 de la Commune de Cocody.
           </p>
-          <div style={{ display: 'flex', gap: 12, flexDirection: isMobile ? 'column' : 'row', flexWrap: 'wrap' }}>
-            <button onClick={() => go('nouvelle_activite')} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '12px 22px', borderRadius: 10, fontSize: 15, fontWeight: 600,
-              background: '#fff', color: 'var(--lagune-800)', border: 'none', cursor: 'pointer',
-              fontFamily: 'var(--font-ui)',
-              width: isMobile ? '100%' : undefined,
-              justifyContent: 'center',
-            }}>
-              <PlusCircle size={16} /> Déclarer une activité
+          <div className="flex flex-wrap gap-4 mt-16">
+            <button
+              onClick={() => go('nouvelle_activite')}
+              className="px-8 py-4 text-base font-semibold bg-white text-lagune-900 hover:bg-gray-100 border-none inline-flex items-center gap-2 rounded-2xl"
+            >
+              <PlusCircle size={18} /> Declarer une activite
             </button>
-            <button onClick={() => go('declaration')} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '12px 22px', borderRadius: 10, fontSize: 15, fontWeight: 600,
-              background: 'rgba(255,255,255,.12)', color: '#fff',
-              border: '1px solid rgba(255,255,255,.25)', cursor: 'pointer',
-              fontFamily: 'var(--font-ui)',
-              width: isMobile ? '100%' : undefined,
-              justifyContent: 'center',
-            }}>
-              <CreditCard size={16} /> Payer mes taxes
+            <button
+              onClick={() => go('declaration')}
+              className="px-8 py-4 text-base font-semibold bg-white/10 text-white border border-white/30 hover:bg-white/20 inline-flex items-center gap-2 rounded-2xl"
+            >
+              <CreditCard size={18} /> Payer mes taxes
             </button>
-            <button onClick={() => go('historique')} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '12px 22px', borderRadius: 10, fontSize: 15, fontWeight: 600,
-              background: 'rgba(255,255,255,.08)', color: 'rgba(255,255,255,.8)',
-              border: '1px solid rgba(255,255,255,.15)', cursor: 'pointer',
-              fontFamily: 'var(--font-ui)',
-              width: isMobile ? '100%' : undefined,
-              justifyContent: 'center',
-            }}>
-              <History size={16} /> Mes reçus
+            <button
+              onClick={() => go('historique')}
+              className="px-8 py-4 text-base font-semibold bg-white/10 text-white border border-white/30 hover:bg-white/20 inline-flex items-center gap-2 rounded-2xl"
+            >
+              <History size={18} /> Mes recrus
             </button>
           </div>
         </div>
       </div>
 
       {/* Features */}
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: isMobile ? '32px 16px' : '48px 24px' }}>
-        <div style={{ textAlign: 'center', marginBottom: 36 }}>
-          <div style={{ fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--lagune-600)', fontWeight: 700, marginBottom: 8 }}>Comment ça marche</div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: '-.3px' }}>Simple, rapide, sécurisé</h2>
+      <div className="max-w-[900px] mx-auto px-4 py-10 md:py-16 md:px-6">
+        <div className="text-center mb-10">
+          <div className="text-xs font-semibold uppercase tracking-widest text-lagune-600 mb-2">Comment ca marche</div>
+          <h2 className="text-2xl font-display font-semibold text-ink-900">Simple, rapide, securise</h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2,1fr)' : 'repeat(3,1fr)', gap: 20 }}>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { ico: <FileText size={28} />, title: 'Déclarez votre activité', txt: "Renseignez votre type d'activité et chiffre d'affaires. Le calcul de votre taxe est automatique selon le barème officiel 2026.", color: 'var(--lagune-600)' },
-            { ico: <CreditCard size={28} />, title: 'Payez en mobile money', txt: 'Orange Money, MTN Money, Wave ou Moov. Paiement sécurisé PSP conforme aux normes UEMOA/BCEAO.', color: 'var(--forest-600)' },
-            { ico: <Receipt size={28} />, title: 'Téléchargez votre reçu', txt: 'Reçu PDF généré instantanément, envoyé par SMS et disponible en ligne. Vérifiable par QR code.', color: 'var(--ocre-600, #c08030)' },
+            { ico: <FileText size={28} />, title: 'Declarez votre activite', txt: "Renseignez votre type d'activite et chiffre d'affaires. Le calcul de votre taxe est automatique selon le bareme officiel 2026.", color: '#0e55a6' },
+            { ico: <CreditCard size={28} />, title: 'Payez en mobile money', txt: 'Orange Money, MTN Money, Wave ou Moov. Paiement securise PSP conforme aux normes UEMOA/BCEAO.', color: '#008030' },
+            { ico: <Receipt size={28} />, title: 'Telechargez votre recu', txt: 'Recu PDF genere instantly, envoye par SMS et disponible en ligne. Verifiable par QR code.', color: '#c98823' },
           ].map((f, i) => (
-            <div key={i} style={{
-              background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)',
-              boxShadow: 'var(--elev-1)', padding: 22, textAlign: 'center',
-              borderTop: `3px solid ${f.color}`,
-            }}>
-              <div style={{
-                width: 52, height: 52, borderRadius: 14,
-                background: `color-mix(in srgb, ${f.color} 12%, transparent)`, color: f.color,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px',
-              }}>{f.ico}</div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 600, marginBottom: 8 }}>{f.title}</div>
-              <div style={{ fontSize: 13, color: 'var(--fg-3)', lineHeight: 1.6 }}>{f.txt}</div>
+            <div key={i} className="bg-white rounded-2xl p-6 border border-ink-100  flex flex-col items-center text-center border-t-4" style={{ borderTopColor: f.color }}>
+              <div className="w-13 h-13 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${f.color}1a`, color: f.color }}>{f.ico}</div>
+              <h3 className="text-lg font-display font-semibold text-ink-900 mb-2">{f.title}</h3>
+              <p className="text-sm text-ink-500 leading-relaxed">{f.txt}</p>
             </div>
           ))}
         </div>
 
         {/* CTA quick-access */}
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2,1fr)', gap: 16, marginTop: 28 }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
           {[
-            { ico: <PlusCircle size={22} />, title: 'Déclarer une activité', sub: "Enregistrez votre commerce, salon, restaurant… sans vous déplacer.", bg: 'var(--lagune-100)', color: 'var(--lagune-700)', screen: 'nouvelle_activite' as Screen },
-            { ico: <Calculator size={22} />, title: 'Payer mes taxes', sub: 'Taxe entreprenant, locaux loués, vendeur ambulant…', bg: 'var(--forest-100)', color: 'var(--forest-700)', screen: 'declaration' as Screen },
-            { ico: <History size={22} />, title: 'Mes paiements', sub: 'Historique, reçus PDF, attestations fiscales.', bg: 'var(--ocre-100)', color: 'var(--ocre-700)', screen: 'historique' as Screen },
-            { ico: <BookOpen size={22} />, title: 'Barème fiscal 2026', sub: 'Délibération N°2025-172 — tous les tarifs et comptes SYSCOHADA.', bg: 'var(--paper-50)', color: 'var(--fg-2)', screen: 'bareme' as Screen },
+            { ico: <PlusCircle size={22} />, title: 'Déclarer une activité', sub: "Enregistrez votre commerce, salon, restaurant… sans vous déplacer.", bg: 'bg-lagune-50', color: 'text-lagune-700', screen: 'nouvelle_activite' as Screen },
+            { ico: <Calculator size={22} />, title: 'Payer mes taxes', sub: 'Taxe entreprenant, locaux loués, vendeur ambulant…', bg: 'bg-forest-50', color: 'text-forest-700', screen: 'declaration' as Screen },
+            { ico: <History size={22} />, title: 'Mes paiements', sub: 'Historique, reçus PDF, attestations fiscales.', bg: 'bg-ocre-50', color: 'text-ocre-700', screen: 'historique' as Screen },
+            { ico: <BookOpen size={22} />, title: 'Barème fiscal 2026', sub: 'Délibération N°2025-172 — tous les tarifs et comptes SYSCOHADA.', bg: 'bg-ink-50', color: 'text-ink-700', screen: 'bareme' as Screen },
           ].map(c => (
-            <button key={c.title} onClick={() => go(c.screen)} style={{
-              display: 'flex', gap: 16, alignItems: 'center', cursor: 'pointer', width: '100%', textAlign: 'left',
-              background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)',
-              boxShadow: 'var(--elev-1)', padding: 18, fontFamily: 'var(--font-ui)',
-              flexWrap: isMobile ? 'wrap' : 'nowrap',
-            }}>
-              <div style={{ width: 46, height: 46, borderRadius: 12, background: c.bg, color: c.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{c.ico}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600, marginBottom: 3, fontSize: 14 }}>{c.title}</div>
-                <div style={{ fontSize: 12, color: 'var(--fg-3)' }}>{c.sub}</div>
+            <button key={c.title} onClick={() => go(c.screen)} className="bg-white rounded-2xl border border-ink-100  p-4 flex gap-4 items-center text-left hover:border-lagune-200 transition-colors group">
+              <div className={`w-[46px] h-[46px] rounded-2xl flex items-center justify-center shrink-0 ${c.bg} ${c.color}`}>{c.ico}</div>
+              <div className="flex-1">
+                <div className="text-[14px] font-semibold text-ink-900 group-hover:text-lagune-700 transition-colors">{c.title}</div>
+                <div className="text-[12px] text-ink-500 mt-0.5">{c.sub}</div>
               </div>
-              <ArrowRight size={16} style={{ color: 'var(--fg-3)', flexShrink: 0 }} />
+              <ArrowRight size={16} className="text-ink-400 shrink-0" />
             </button>
           ))}
         </div>
 
         {/* Tax categories barème */}
-        <div style={{ marginTop: 48 }}>
-          <div style={{ textAlign: 'center', marginBottom: 28 }}>
-            <div style={{ fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--lagune-600)', fontWeight: 700, marginBottom: 8 }}>Barème fiscal 2026</div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600, letterSpacing: '-.3px' }}>Délibération N°2025-172/CC/CM/SG</h2>
+        <div className="mt-16">
+          <div className="text-center mb-8">
+            <div className="text-xs font-semibold uppercase tracking-widest text-lagune-600 mb-2 font-bold">Barème fiscal 2026</div>
+            <h2 className="text-2xl font-display font-semibold text-ink-900 text-[22px]">Délibération N°2025-172/CC/CM/SG</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2,1fr)', gap: 12 }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {BAREME_COMPLET[0].chapitres.flatMap(ch => ch.sections).map(section => (
-              <div key={section.compte} style={{
-                background: 'var(--paper-0)', borderRadius: 12, border: '1px solid var(--border-subtle)',
-                padding: '14px 18px', display: 'flex', gap: 14, alignItems: 'flex-start',
-              }}>
-                <div style={{
-                  width: 40, height: 40, borderRadius: 10,
-                  background: 'var(--lagune-100)', color: 'var(--lagune-700)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700,
-                }}>{section.compte}</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--fg-1)', marginBottom: 2 }}>{section.label}</div>
-                  <div style={{ fontSize: 11, color: 'var(--fg-3)', fontFamily: 'var(--font-mono)' }}>Compte {section.compte}</div>
-                  <div style={{ fontSize: 12, color: 'var(--fg-3)', marginTop: 4 }}>
+              <div key={section.compte} className="bg-white rounded-2xl border border-ink-100  p-4 flex gap-4 items-start bg-paper-0">
+                <div className="w-10 h-10 rounded-2xl bg-lagune-100 text-lagune-700 flex items-center justify-center shrink-0 font-mono text-xs font-bold">
+                  {section.compte}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-[13px] text-ink-900 leading-tight mb-1">{section.label}</div>
+                  <div className="text-[11px] text-ink-500 font-mono">Compte {section.compte}</div>
+                  <div className="text-[12px] text-ink-600 mt-1.5 font-medium">
                     {typeof section.lignes[0]?.montant === 'number'
-                      ? <><b>{formatAmount(section.lignes[0].montant)} FCFA</b> · {section.lignes[0].unite.split(' par ')[1] ?? section.lignes[0].unite}</>
-                      : <b>{section.lignes[0]?.montant}</b>
+                      ? <><span className="t-amount">{formatAmount(section.lignes[0].montant)} FCFA</span> · {section.lignes[0].unite.split(' par ')[1] ?? section.lignes[0].unite}</>
+                      : <span className="font-semibold">{section.lignes[0]?.montant}</span>
                     }
                   </div>
                 </div>
@@ -502,31 +436,23 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
 
   if (step === 'done') {
     return (
-      <div style={{ maxWidth: 560, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
-        <div style={{ textAlign: 'center', padding: '40px 0' }}>
-          <div style={{
-            width: 72, height: 72, borderRadius: '50%',
-            background: 'var(--forest-100)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 20px', boxShadow: '0 0 0 8px var(--forest-100)',
-          }}>
-            <CheckCircle size={34} style={{ color: 'var(--forest-700)' }} />
+      <div className="max-w-[560px] mx-auto px-4 py-8">
+        <div className="text-center py-10">
+          <div className="w-[72px] h-[72px] rounded-full bg-forest-100 flex items-center justify-center mx-auto mb-5 shadow-[0_0_0_8px_var(--forest-50)]">
+            <CheckCircle size={34} className="text-forest-700" />
           </div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 600, marginBottom: 8 }}>Paiement confirmé</h2>
-          <p style={{ color: 'var(--fg-3)', fontSize: 14, marginBottom: 28 }}>
-            PI-SPI · {formatAmount(taxe)} FCFA · {typeLabel[taxType]}
+          <h2 className="text-2xl font-display font-semibold text-ink-900 mb-2">Paiement confirmé</h2>
+          <p className="text-xs text-ink-500 mb-8">
+            PI-SPI · <span className="t-amount font-bold text-ink-900">{formatAmount(taxe)} FCFA</span> · {typeLabel[taxType]}
           </p>
 
           {/* Receipt paper */}
-          <div style={{
-            background: '#fff', borderRadius: 12, padding: 24,
-            border: '1px solid var(--border)', fontFamily: 'var(--font-mono)', fontSize: 12,
-            maxWidth: 340, margin: '0 auto 28px', textAlign: 'left', boxShadow: 'var(--elev-2)',
-          }}>
-            <div style={{ textAlign: 'center', paddingBottom: 12, borderBottom: '1px dashed var(--border)', marginBottom: 12 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/logo-cocody.png" style={{ width: 38, height: 38, marginBottom: 4 }} alt="Cocody" />
-              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 12, fontWeight: 700, color: 'var(--lagune-900)' }}>MAIRIE DE COCODY</div>
-              <div style={{ fontSize: 10, color: 'var(--fg-3)', letterSpacing: '.07em' }}>PORTAIL FISCAL · CoTax</div>
+          <div className="bg-white rounded-2xl p-6 border border-ink-200 font-mono text-[12px] max-w-[340px] mx-auto mb-8 text-left  relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-lagune-600" />
+            <div className="text-center pb-3 border-b border-dashed border-ink-200 mb-3 pt-2">
+              <img src="/assets/logo-cocody.png" className="w-[38px] h-[38px] mx-auto mb-1" alt="Cocody" />
+              <div className="font-ui text-[12px] font-bold text-lagune-900 uppercase">Mairie de Cocody</div>
+              <div className="text-[10px] text-ink-400 tracking-widest uppercase">Portail fiscal · CoTax</div>
             </div>
             {([
               ['N° reçu', 'RC-2026-18501'],
@@ -537,37 +463,26 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
               ['Compte', compteMap[taxType] ?? '70262'],
               ['Paiement', 'PI-SPI · BCEAO'],
             ] as [string, string][]).map(([k, v]) => (
-              <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0', fontSize: 11 }}>
-                <span style={{ color: 'var(--fg-3)' }}>{k}</span>
-                <span style={{ fontWeight: 600 }}>{v}</span>
+              <div key={k} className="flex justify-between py-0.5 text-[11px]">
+                <span className="text-ink-500">{k}</span>
+                <span className="font-semibold text-ink-900">{v}</span>
               </div>
             ))}
-            <div style={{
-              fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, textAlign: 'center',
-              padding: '12px 0', borderTop: '1px dashed var(--border)', borderBottom: '1px dashed var(--border)', margin: '10px 0',
-            }}>
+            <div className="t-h1 text-center py-3 border-y border-dashed border-ink-200 my-2.5 !font-mono font-bold">
               {formatAmount(taxe)} FCFA
             </div>
-            <div style={{ fontSize: 10, textAlign: 'center', color: 'var(--fg-3)', lineHeight: 1.5 }}>
+            <div className="text-[10px] text-center text-ink-400 leading-normal">
               Vérifier : cocody.ci/v/18501<br />Conservation obligatoire 5 ans
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button style={{
-              display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 16px', borderRadius: 8,
-              fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)',
-              color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)',
-            }}>
+          <div className="flex flex-wrap gap-2.5 justify-center">
+            <Button variant="ghost">
               <Download size={14} /> Télécharger PDF
-            </button>
-            <button onClick={() => go('historique')} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 16px', borderRadius: 8,
-              fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff',
-              border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)',
-            }}>
+            </Button>
+            <Button onClick={() => go('historique')} variant="primary">
               <History size={14} /> Voir mes paiements
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -575,60 +490,52 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
   }
 
   return (
-    <div style={{ maxWidth: 560, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: '-.4px', marginBottom: 4 }}>Payer mes taxes</h1>
-        <p style={{ fontSize: 14, color: 'var(--fg-3)' }}>Sélectionnez une activité enregistrée · Délibération N°2025-172/CC/CM/SG</p>
+    <div className="max-w-[560px] mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-xl font-display font-semibold mb-1">Payer mes taxes</h1>
+        <p className="text-xs text-ink-500">Sélectionnez une activité enregistrée · Délibération N°2025-172</p>
       </div>
 
       {/* ── Step 0 — Sélection de l'activité ── */}
       {step === 0 && (
         <div>
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 12 }}>Choisissez l&apos;activité à régulariser</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="mb-4">
+            <div className="text-xs text-ink-500 font-semibold text-ink-700 mb-3">Choisissez l&apos;activité à régulariser</div>
+            <div className="flex flex-col gap-2.5">
               {ACTIVITES_CONTRIBUABLE.map(act => (
                 <button
                   key={act.id}
                   onClick={() => selectActivite(act)}
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '14px 16px', borderRadius: 12, border: '1px solid var(--border)',
-                    background: 'var(--paper-0)', cursor: 'pointer', textAlign: 'left',
-                    fontFamily: 'var(--font-ui)', transition: 'border-color .15s',
-                  }}
+                  className="bg-white rounded-2xl border border-ink-100  flex items-center justify-between p-4 cursor-pointer text-left hover:border-lagune-300 transition-colors group"
                 >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                      <span style={{ fontWeight: 700, fontSize: 14, color: 'var(--fg-1)' }}>{act.nom}</span>
-                      <span style={{
-                        fontSize: 10, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase',
-                        padding: '2px 7px', borderRadius: 999,
-                        background: act.statut === 'actif' ? 'var(--forest-100)' : 'var(--ocre-100)',
-                        color: act.statut === 'actif' ? 'var(--forest-900)' : 'var(--ocre-900)',
-                      }}>{act.statut === 'actif' ? 'Actif' : 'En attente'}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-bold text-[14px] text-ink-900 group-hover:text-lagune-700 transition-colors">{act.nom}</span>
+                      <span className={`text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-pill ${act.statut === 'actif' ? 'bg-forest-100 text-forest-900' : 'bg-ocre-100 text-ocre-900'}`}>
+                        {act.statut === 'actif' ? 'Actif' : 'En attente'}
+                      </span>
                     </div>
-                    <div style={{ fontSize: 12, color: 'var(--fg-3)' }}>{act.regime} · Compte {act.compte}</div>
-                    <div style={{ fontSize: 11, color: 'var(--fg-3)', marginTop: 2 }}>{act.adresse}</div>
+                    <div className="text-[12px] text-ink-500 font-medium">{act.regime} · Compte {act.compte}</div>
+                    <div className="text-[11px] text-ink-400 mt-0.5">{act.adresse}</div>
                   </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 16 }}>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 700, color: 'var(--lagune-700)' }}>{formatAmount(act.taxeMensuelle)}</div>
-                    <div style={{ fontSize: 10, color: 'var(--fg-3)' }}>FCFA / mois</div>
+                  <div className="text-right shrink-0 ml-4">
+                    <div className="t-amount text-lg font-bold text-lagune-700">{formatAmount(act.taxeMensuelle)}</div>
+                    <div className="text-[10px] text-ink-400 font-medium uppercase tracking-wider">FCFA / mois</div>
                   </div>
                 </button>
               ))}
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '20px 0' }}>
-            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
-            <span style={{ fontSize: 11, color: 'var(--fg-3)', flexShrink: 0 }}>ou</span>
-            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-ink-200" />
+            <span className="text-sm font-medium text-ink-400">ou</span>
+            <div className="flex-1 h-px bg-ink-200" />
           </div>
 
           <button
             onClick={() => { setActiviteSelectId(null); setStep(1) }}
-            style={{ width: '100%', padding: '12px', borderRadius: 10, border: '1px dashed var(--border-strong)', background: 'transparent', fontSize: 13, fontWeight: 600, color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
+            className="w-full py-3.5 rounded-2xl border-2 border-dashed border-ink-300 bg-transparent text-[13px] font-bold text-ink-600 hover:border-lagune-400 hover:text-lagune-600 transition-all cursor-pointer font-ui"
           >
             + Déclarer une activité non enregistrée
           </button>
@@ -637,7 +544,7 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
 
       {/* Step indicator (visible seulement pour steps 1–3) */}
       {typeof step === 'number' && step >= 1 && (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 28 }}>
+      <div className="flex items-center gap-0 mb-8 overflow-x-auto pb-2 scrollbar-hide">
         {STEPS.map((label, i) => {
           const n = i + 1
           const stepNum = typeof step === 'number' ? step : 4
@@ -646,29 +553,26 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
           return (
             <React.Fragment key={label}>
               <div
-                style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: isDone ? 'pointer' : 'default' }}
+                className={`flex items-center gap-2.5 shrink-0 ${isDone ? 'cursor-pointer' : 'cursor-default'}`}
                 onClick={() => isDone && setStep(n as DeclaStep)}
               >
-                <div style={{
-                  width: 30, height: 30, borderRadius: '50%',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 13, fontWeight: 700, flexShrink: 0,
-                  background: isDone ? 'var(--forest-600)' : isActive ? 'var(--lagune-600)' : 'var(--bg-sunken)',
-                  color: isDone || isActive ? '#fff' : 'var(--fg-3)',
-                  boxShadow: isActive ? '0 0 0 4px var(--lagune-100)' : 'none',
-                }}>
+                <div className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-[13px] font-bold transition-all ${
+                  isDone ? 'bg-forest-600 text-white' : 
+                  isActive ? 'bg-lagune-600 text-white ring-4 ring-lagune-100' : 
+                  'bg-ink-100 text-ink-400'
+                }`}>
                   {isDone ? '✓' : n}
                 </div>
-                <span style={{
-                  fontSize: 12, fontWeight: 600,
-                  color: isActive ? 'var(--lagune-700)' : isDone ? 'var(--fg-2)' : 'var(--fg-3)',
-                }}>{label}</span>
+                <span className={`text-[12px] font-bold ${
+                  isActive ? 'text-lagune-700' : 
+                  isDone ? 'text-ink-700' : 
+                  'text-ink-400'
+                }`}>{label}</span>
               </div>
               {i < STEPS.length - 1 && (
-                <div style={{
-                  flex: 1, height: 2, margin: '0 8px', minWidth: 24,
-                  background: isDone ? 'var(--forest-500)' : 'var(--border)',
-                }} />
+                <div className={`flex-1 h-0.5 mx-2 min-w-[20px] ${
+                  isDone ? 'bg-forest-500' : 'bg-ink-200'
+                }`} />
               )}
             </React.Fragment>
           )
@@ -678,58 +582,48 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
 
       {/* ── Step 1 ── */}
       {step === 1 && (
-        <div style={{ background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)', padding: isMobile ? 16 : 24 }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Votre activité</h2>
+        <div className="bg-white rounded-2xl border border-ink-100  p-5 md:p-6">
+          <h2 className="text-sm font-semibold mb-4">Votre activité</h2>
 
           {/* ── Assistant fiscal IA ── */}
-          <div style={{ marginBottom: 20, borderRadius: 12, border: '1px solid var(--lagune-200)', background: 'var(--lagune-50)', overflow: 'hidden' }}>
-            {/* Header toggle */}
+          <div className="mb-6 rounded-2xl border border-lagune-200 bg-lagune-50 overflow-hidden ">
             <button
               onClick={() => setAiStep(s => s === 'idle' ? 'open' : (s === 'open' ? 'idle' : s))}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-ui)' }}
+              className="w-full flex items-center gap-3 p-3 text-left hover:bg-lagune-100/50 transition-colors"
             >
-              <div style={{ width: 30, height: 30, borderRadius: 8, background: 'var(--lagune-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Sparkles size={14} style={{ color: '#fff' }} />
+              <div className="w-8 h-8 rounded-2xl bg-lagune-600 flex items-center justify-center shrink-0 ">
+                <Sparkles size={14} className="text-white" />
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--lagune-900)' }}>Assistant fiscal IA</div>
-                <div style={{ fontSize: 11, color: 'var(--lagune-600)' }}>Décrivez votre activité — je détermine votre régime automatiquement</div>
+              <div className="flex-1">
+                <div className="font-bold text-[13px] text-lagune-950">Assistant fiscal IA</div>
+                <div className="text-[11px] text-lagune-700 font-medium">Détermination automatique du régime</div>
               </div>
-              <ChevronDown size={14} style={{ color: 'var(--lagune-600)', transform: aiStep !== 'idle' ? 'rotate(180deg)' : 'none', transition: 'transform .2s', flexShrink: 0 }} />
+              <ChevronDown size={14} className={`text-lagune-600 transition-transform duration-300 ${aiStep !== 'idle' ? 'rotate-180' : ''}`} />
             </button>
 
-            {/* Questionnaire */}
             {aiStep === 'open' && (
-              <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '14px 14px 16px' }}>
-                <div style={{ marginBottom: 10 }}>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--lagune-700)', marginBottom: 4 }}>Décrivez votre activité *</label>
+              <div className="p-4 pt-0 border-t border-lagune-200">
+                <div className="mt-4 mb-3">
+                  <label className="text-sm font-medium text-lagune-700 mb-1.5 block">Décrivez votre activité *</label>
                   <textarea
                     value={aiDesc}
                     onChange={e => setAiDesc(e.target.value)}
-                    placeholder="Ex : Je tiens une boutique d'épicerie au marché Cocovico, je vends des conserves et produits alimentaires. Je ne suis pas à la patente."
+                    placeholder="Ex : Je tiens une boutique d'épicerie au marché Cocovico..."
                     rows={3}
-                    style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--lagune-300)', background: '#fff', fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--fg-1)', resize: 'vertical', boxSizing: 'border-box' }}
+                    className="app-input !bg-white !border-lagune-200 focus:!border-lagune-500 !text-[13px]"
                   />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 10, marginBottom: 10 }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                   {[
-                    {
-                      label: 'Local commercial',
-                      val: aiLocal, set: setAiLocal,
-                      opts: ['Boutique / atelier fixe', 'Étal en marché', 'Ambulant (pas de local)', 'Domicile / télétravail'],
-                    },
-                    {
-                      label: 'Assujetti à la patente ?',
-                      val: aiPatente, set: setAiPatente,
-                      opts: ['Oui (SARL / EI formel)', 'Non (petit commerce)', 'Je ne sais pas'],
-                    },
+                    { label: 'Local commercial', val: aiLocal, set: setAiLocal, opts: ['Boutique / atelier fixe', 'Étal en marché', 'Ambulant (pas de local)', 'Domicile / télétravail'] },
+                    { label: 'Assujetti à la patente ?', val: aiPatente, set: setAiPatente, opts: ['Oui (SARL / EI formel)', 'Non (petit commerce)', 'Je ne sais pas'] },
                   ].map(({ label, val, set, opts }) => (
                     <div key={label}>
-                      <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--lagune-700)', marginBottom: 4 }}>{label}</label>
+                      <label className="text-sm font-medium text-lagune-700 mb-1.5 block">{label}</label>
                       <select
                         value={val}
                         onChange={e => set(e.target.value)}
-                        style={{ width: '100%', padding: '8px 10px', borderRadius: 7, border: '1px solid var(--lagune-300)', background: '#fff', fontFamily: 'var(--font-ui)', fontSize: 12, color: val ? 'var(--fg-1)' : 'var(--fg-3)' }}
+                        className="app-input !bg-white !border-lagune-200 !text-[12px] !py-2"
                       >
                         <option value="">— Choisir —</option>
                         {opts.map(o => <option key={o} value={o}>{o}</option>)}
@@ -737,191 +631,181 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
                     </div>
                   ))}
                 </div>
-                <div style={{ marginBottom: 14 }}>
-                  <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--lagune-700)', marginBottom: 4 }}>CA annuel estimé (FCFA) — facultatif</label>
+                <div className="mb-4">
+                  <label className="text-sm font-medium text-lagune-700 mb-1.5 block">CA annuel estimé (FCFA)</label>
                   <input
                     value={aiCa}
                     onChange={e => setAiCa(e.target.value)}
                     placeholder="Ex : 1 800 000"
-                    style={{ width: '100%', padding: '8px 10px', borderRadius: 7, border: '1px solid var(--lagune-300)', background: '#fff', fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--fg-1)', boxSizing: 'border-box' }}
+                    className="app-input !bg-white !border-lagune-200 !font-mono !text-[13px]"
                   />
                 </div>
-                <button
+                <Button
                   onClick={analyserAssiette}
                   disabled={!aiDesc.trim()}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, border: 'none', cursor: aiDesc.trim() ? 'pointer' : 'not-allowed', fontFamily: 'var(--font-ui)', background: aiDesc.trim() ? 'var(--lagune-600)' : 'var(--bg-sunken)', color: aiDesc.trim() ? '#fff' : 'var(--fg-3)' }}
+                  className="w-full !py-2.5 !text-[13px]"
                 >
-                  <Sparkles size={13} /> Analyser mon profil fiscal
-                </button>
+                  <Sparkles size={14} /> Analyser mon profil fiscal
+                </Button>
               </div>
             )}
 
-            {/* Loading */}
             {aiStep === 'loading' && (
-              <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '16px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid var(--lagune-300)', borderTopColor: 'var(--lagune-600)', animation: 'spin 0.7s linear infinite', flexShrink: 0 }} />
-                <span style={{ fontSize: 13, color: 'var(--lagune-700)', fontFamily: 'var(--font-ui)' }}>Analyse en cours…</span>
+              <div className="p-4 border-t border-lagune-200 flex items-center gap-3">
+                <div className="w-4 h-4 rounded-full border-2 border-lagune-300 border-t-lagune-600 animate-spin" />
+                <span className="text-[13px] text-lagune-700 font-medium font-ui">Analyse intelligente en cours…</span>
               </div>
             )}
 
-            {/* Result */}
             {aiStep === 'result' && aiResult && (
-              <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '14px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  <CheckCircle size={15} style={{ color: 'var(--forest-600)', flexShrink: 0 }} />
-                  <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--lagune-900)' }}>{aiResult.regime}</span>
-                  {!aiResult.fiable && <AlertCircle size={13} style={{ color: 'var(--ocre-600)', flexShrink: 0 }} />}
+              <div className="p-4 border-t border-lagune-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle size={15} className="text-forest-600" />
+                  <span className="font-bold text-[13px] text-lagune-950">{aiResult.regime}</span>
                 </div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--lagune-700)', marginBottom: 6 }}>
+                <div className="font-mono text-[11px] text-lagune-700 mb-3 bg-lagune-100/50 p-2 rounded-2xl inline-block">
                   Compte {aiResult.compte} · {aiResult.assiette}
-                  {aiResult.montantEstime > 0 && ` · ~${formatAmount(aiResult.montantEstime)} FCFA ${aiResult.periodeCalcul}`}
+                  {aiResult.montantEstime > 0 && ` · ~${formatAmount(aiResult.montantEstime)} F ${aiResult.periodeCalcul}`}
                 </div>
-                <p style={{ fontSize: 12, color: 'var(--fg-2)', lineHeight: 1.55, marginBottom: 12 }}>{aiResult.justification}</p>
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  <button
-                    onClick={confirmerAssistant}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 7, fontSize: 12, fontWeight: 600, background: 'var(--forest-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
-                  >
-                    <CheckCircle size={12} /> Appliquer ce régime
-                  </button>
-                  <button
-                    onClick={() => setAiStep('open')}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 12px', borderRadius: 7, fontSize: 12, fontWeight: 600, background: 'transparent', border: '1px solid var(--lagune-300)', color: 'var(--lagune-700)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
-                  >
-                    Modifier la description
-                  </button>
+                <p className="text-[12px] text-ink-700 leading-relaxed mb-4">{aiResult.justification}</p>
+                <div className="flex gap-2">
+                  <Button onClick={confirmerAssistant} className="!py-2 !text-[12px] !px-4 bg-forest-600 hover:bg-forest-700">
+                    Appliquer ce régime
+                  </Button>
+                  <Button onClick={() => setAiStep('open')} variant="ghost" className="!py-2 !text-[12px] !px-4 !border-lagune-200 !text-lagune-700 hover:!bg-lagune-100">
+                    Modifier
+                  </Button>
                 </div>
               </div>
             )}
 
-            {/* Error */}
             {aiStep === 'error' && (
-              <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '12px 14px' }}>
-                <div style={{ fontSize: 12, color: 'var(--terra-700)', display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-                  <AlertCircle size={13} style={{ flexShrink: 0, marginTop: 1 }} />
+              <div className="p-4 border-t border-lagune-200">
+                <div className="text-[12px] text-terra-700 flex items-start gap-2 bg-terra-50 p-3 rounded-2xl border border-terra-100">
+                  <AlertCircle size={14} className="shrink-0 mt-0.5" />
                   <span>{aiError}</span>
                 </div>
-                <button onClick={() => setAiStep('open')} style={{ marginTop: 8, fontSize: 12, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--lagune-600)', fontFamily: 'var(--font-ui)', fontWeight: 600, padding: 0 }}>
+                <button onClick={() => setAiStep('open')} className="mt-2.5 text-[12px] font-bold text-lagune-600 hover:underline">
                   ↩ Réessayer
                 </button>
               </div>
             )}
           </div>
 
-          {/* divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
-            <span style={{ fontSize: 11, color: 'var(--fg-3)', fontWeight: 500, flexShrink: 0 }}>ou remplissez directement</span>
-            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-ink-100" />
+            <span className="text-sm font-medium text-ink-400">ou remplissez directement</span>
+            <div className="flex-1 h-px bg-ink-100" />
           </div>
 
-          {[
-            { label: 'Type de contribuable *', node: (
-              <select value={taxType} onChange={e => setTaxType(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-1)' }}>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-ink-600 mb-1.5 block">Type de contribuable *</label>
+              <select value={taxType} onChange={e => setTaxType(e.target.value)} className="app-input text-[14px]">
                 <optgroup label="Compte 70262 — Taxe entreprenant">
                   <option value="commerce">Commerce / négoce — 2 % du CA annuel</option>
                   <option value="services">Prestations de services / artisanat — 2,5 % du CA annuel</option>
-                  <option value="ambulant">Vendeur ambulant / étalage marché (CA &lt; 1 200 000 F) — 100 F/jour</option>
+                  <option value="ambulant">Vendeur ambulant / étalage marché — 100 F/jour</option>
                 </optgroup>
-                <optgroup label="Compte 7027 — Locaux loués en garnis">
-                  <option value="loue">Hôtel, résidence meublée, chambre meublée — 1 %–5 % valeur locative/mois</option>
+                <optgroup label="Compte 7027 — Locaux loués">
+                  <option value="loue">Hôtel, résidence, chambre meublée — 1 %–5 %</option>
                 </optgroup>
                 <optgroup label="Compte 7038 — Établissements de nuit">
-                  <option value="nuit_ent">Bar / buvette (exploitant entreprenant) — 3 000 F/mois</option>
-                  <option value="nuit_pat">Bar / club — boissons (assujetti patente) — 52 500 F/mois</option>
+                  <option value="nuit_ent">Bar / buvette (entreprenant) — 3 000 F/mois</option>
+                  <option value="nuit_pat">Bar / club (boissons) — 52 500 F/mois</option>
                 </optgroup>
-                <optgroup label="Compte 7041 — Taxis communaux">
+                <optgroup label="Autres taxes">
                   <option value="taxi">Taxi communal (wôrô-wôrô) — 20 000 F/trimestre</option>
-                </optgroup>
-                <optgroup label="Comptes 7034 / 7035 / 7036 — Sport & spectacles">
-                  <option value="spectacle">Spectacles, galas, concerts — 10 % des recettes brutes</option>
-                  <option value="sport">Manifestation sportive payante — 5 % des recettes brutes</option>
-                </optgroup>
-                <optgroup label="Compte 7031 — Charrettes">
-                  <option value="charrette">Charrette à bras — 1 000 F/mois</option>
-                </optgroup>
-                <optgroup label="Compte 7042 — Publicité">
-                  <option value="pub_papier">Affiche papier — 200 F/m²/mois</option>
-                  <option value="pub_enseigne">Enseigne peinte / protégée vitre — 1 000 F/m²/mois</option>
+                  <option value="spectacle">Spectacles, galas, concerts — 10 %</option>
+                  <option value="sport">Manifestation sportive — 5 %</option>
                 </optgroup>
               </select>
-            )},
-            { label: 'NUI / RCCM *', node: (
-              <input defaultValue="NUI-2026-12401" placeholder="Ex : NUI-2026-XXXXX" style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-1)' }} />
-            )},
-          ].map(({ label, node }) => (
-            <div key={label} style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 5 }}>{label}</label>
-              {node}
             </div>
-          ))}
-          {!isForfait && taxType !== 'spectacle' && taxType !== 'sport' && taxType !== 'taxi' && taxType !== 'loue' && (
-            <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 5 }}>Chiffre d&apos;affaires annuel déclaré (FCFA) *</label>
-              <input value={ca} onChange={e => setCa(e.target.value)} placeholder="Ex : 1 800 000" style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--fg-1)' }} />
+            
+            <div>
+              <label className="text-sm font-medium text-ink-600 mb-1.5 block">NUI / RCCM *</label>
+              <input defaultValue="NUI-2026-12401" placeholder="Ex : NUI-2026-XXXXX" className="app-input font-mono" />
             </div>
-          )}
-          <div style={{ marginBottom: 20 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 5 }}>Commune de rattachement</label>
-            <select style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-1)' }}>
-              <option>Commune de Cocody</option>
-            </select>
+
+            {!isForfait && taxType !== 'spectacle' && taxType !== 'sport' && taxType !== 'taxi' && taxType !== 'loue' && (
+              <div>
+                <label className="text-sm font-medium text-ink-600 mb-1.5 block">Chiffre d&apos;affaires annuel (FCFA) *</label>
+                <input value={ca} onChange={e => setCa(e.target.value)} placeholder="Ex : 1 800 000" className="app-input font-mono" />
+              </div>
+            )}
+            
+            <div>
+              <label className="text-sm font-medium text-ink-600 mb-1.5 block">Commune de rattachement</label>
+              <select className="app-input">
+                <option>Commune de Cocody</option>
+              </select>
+            </div>
           </div>
-          <div style={{ height: 1, background: 'var(--border)', marginBottom: 20 }} />
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button onClick={() => setStep(2)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+
+          <div className="mt-8 pt-6 border-t border-ink-100 flex justify-end">
+            <Button onClick={() => setStep(2)}>
               Calculer la taxe <ArrowRight size={14} />
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
       {/* ── Step 2 ── */}
       {step === 2 && (
-        <div style={{ background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)', padding: isMobile ? 16 : 24 }}>
+        <div className="bg-white rounded-2xl border border-ink-100  p-5 md:p-6">
           {activiteSelectId && (() => {
             const act = ACTIVITES_CONTRIBUABLE.find(a => a.id === activiteSelectId)
             if (!act) return null
             return (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 8, background: 'var(--lagune-50)', border: '1px solid var(--lagune-100)', marginBottom: 18 }}>
-                <CheckCircle size={14} style={{ color: 'var(--lagune-600)', flexShrink: 0 }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--lagune-900)' }}>{act.nom}</span>
-                  <span style={{ fontSize: 12, color: 'var(--lagune-600)', marginLeft: 8 }}>{act.regime}</span>
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-lagune-50 border border-lagune-100 mb-5">
+                <CheckCircle size={14} className="text-lagune-600 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <span className="font-bold text-[13px] text-lagune-900 leading-tight block">{act.nom}</span>
+                  <span className="text-[12px] text-lagune-600">{act.regime}</span>
                 </div>
-                <button onClick={() => { setActiviteSelectId(null); setStep(0) }} style={{ fontSize: 11, color: 'var(--lagune-600)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)', fontWeight: 600 }}>Changer</button>
+                <button onClick={() => { setActiviteSelectId(null); setStep(0) }} className="text-[11px] font-bold text-lagune-600 hover:underline">Changer</button>
               </div>
             )
           })()}
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, marginBottom: 20 }}>Calcul automatique</h2>
-          <div style={{ background: 'var(--lagune-50)', border: '1px solid var(--lagune-200)', borderRadius: 12, padding: '20px 24px', marginBottom: 20, textAlign: 'center' }}>
-            <div style={{ fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--lagune-600)', fontWeight: 700, marginBottom: 8 }}>Taxe mensuelle calculée</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 42, fontWeight: 700, color: 'var(--lagune-800)', letterSpacing: '-.5px', fontVariantNumeric: 'tabular-nums' }}>
-              {formatAmount(taxe)}
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--lagune-600)', marginLeft: 8, letterSpacing: '.07em', textTransform: 'uppercase' }}>FCFA</span>
+          
+          <h2 className="text-sm font-semibold mb-6">Calcul automatique</h2>
+          
+<div className="bg-lagune-900 rounded-2xl p-8 mb-6 text-center  relative overflow-hidden group">
+            <div className="absolute inset-0 bg-[url('/assets/pattern-kita.svg')] bg-[size:200px] opacity-10 pointer-events-none" />
+            <div className="relative z-10">
+              <div className="text-xs font-semibold uppercase tracking-widest text-white/60 mb-2">Taxe mensuelle calculee</div>
+              <div className="text-4xl md:text-5xl font-display font-semibold text-white mb-2">
+                {formatAmount(taxe)}
+                <span className="text-base text-white/50 ml-3 uppercase font-medium">FCFA</span>
+              </div>
+              {!isForfait && taxType !== 'spectacle' && taxType !== 'sport' && taxType !== 'taxi' && taxType !== 'loue' ? (
+                <div className="text-sm text-white/70">CA {formatAmount(caNum)} F × {taux}% ÷ 12 mois</div>
+              ) : (
+                <div className="text-sm text-white/70">{typeLabel[taxType]}</div>
+              )}
             </div>
-            {!isForfait && taxType !== 'spectacle' && taxType !== 'sport' && taxType !== 'taxi' && taxType !== 'loue' ? (
-              <div style={{ fontSize: 12, color: 'var(--fg-3)', marginTop: 8 }}>CA annuel : {formatAmount(caNum)} FCFA × {taux} % ÷ 12 mois</div>
-            ) : (
-              <div style={{ fontSize: 12, color: 'var(--fg-3)', marginTop: 8 }}>{typeLabel[taxType]}</div>
-            )}
           </div>
-          <div style={{ background: 'var(--bg-sunken)', borderRadius: 10, padding: '14px 16px', fontSize: 13, color: 'var(--fg-2)', marginBottom: 20 }}>
-            {[['Type', typeLabel[taxType]], ['Compte budgétaire', compteMap[taxType] ?? '70262'], ['Période', 'Avril 2026']].map(([k, v], idx, arr) => (
-              <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: idx < arr.length - 1 ? 6 : 0 }}>
-                <span style={{ color: 'var(--fg-3)' }}>{k}</span>
-                <span style={{ fontWeight: 600, fontFamily: k === 'Compte budgétaire' ? 'var(--font-mono)' : 'var(--font-ui)' }}>{v}</span>
+
+          <div className="space-y-3 mb-6">
+            {[
+              ['Type', typeLabel[taxType]], 
+              ['Compte budgétaire', compteMap[taxType] ?? '70262'], 
+              ['Période', 'Avril 2026']
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between items-center py-1">
+                <span className="text-xs text-ink-500 text-ink-500 font-medium">{k}</span>
+                <span className={`text-[13px] font-bold text-ink-900 ${k === 'Compte budgétaire' ? 'font-mono' : ''}`}>{v}</span>
               </div>
             ))}
           </div>
-          <div style={{ height: 1, background: 'var(--border)', marginBottom: 20 }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button onClick={() => setStep(1)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+
+          <div className="pt-6 border-t border-ink-100 flex justify-between">
+            <Button variant="ghost" onClick={() => setStep(1)}>
               <ChevronLeft size={14} /> Modifier
-            </button>
-            <button onClick={goStep3} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+            </Button>
+            <Button variant="primary" onClick={goStep3}>
               Payer maintenant <ArrowRight size={14} />
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -934,132 +818,116 @@ function ScreenDeclaration({ go }: { go: (s: Screen) => void }) {
           { name: 'MTN MoMo',    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRREHzuiDDG6LBrf_qEjhbqEkvsCzYF5Tg5dI9CsoDgDwUj4z_IWVZ--_uhRUU0dTQgs-0&usqp=CAU' },
           { name: 'Moov Money',  logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_oO0OKHN4zOlbVzs6iXrmSuZVV-UrqvmGUg&s' },
           { name: 'Djamo',       logo: 'https://media.licdn.com/dms/image/v2/C4D0BAQEWIf9Awxo34w/company-logo_200_200/company-logo_200_200/0/1630548736125/djamoapp_logo?e=2147483647&v=beta&t=4IjMaezLbWFPXlAr3X370jC9ynU_ctyefgg2-lk5EGw' },
-          { name: 'Carte',       logo: 'https://cdn-icons-png.flaticon.com/512/6963/6963703.png' },
         ]
         const canConfirm = pispiTab === 'qr' || pispiAlias.trim().length > 0
         return (
-          <div style={{ background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)', overflow: 'hidden' }}>
-
-            {/* Bandeau supérieur gradient */}
-            <div style={{ background: 'linear-gradient(135deg, var(--lagune-900) 0%, var(--lagune-700) 100%)', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/pispi-logo.png" alt="PI-SPI" width={40} height={40} style={{ borderRadius: 10, flexShrink: 0 }} />
+          <div className="bg-white rounded-2xl border border-ink-100  overflow-hidden !">
+            <div className="bg-lagune-900 p-6 flex items-center justify-between relative overflow-hidden">
+              <div className="absolute inset-0 bg-[url('/assets/pattern-kita.svg')] bg-[size:180px] opacity-5 pointer-events-none" />
+              <div className="flex items-center gap-4 relative z-10">
+                <img src="/assets/pispi-logo.png" alt="PI-SPI" className="w-11 h-11 rounded-2xl  border border-white/10 shrink-0" />
                 <div>
-                  <div style={{ fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.6)', fontFamily: 'var(--font-ui)', fontWeight: 600, marginBottom: 2 }}>Paiement sécurisé</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, color: '#fff', letterSpacing: '-.2px' }}>PI-SPI · BCEAO</div>
+                  <div className="text-sm font-medium text-white/50 mb-0.5">Paiement sécurisé</div>
+                  <div className="text-sm font-semibold !text-white !font-display leading-tight">PI-SPI · BCEAO</div>
                 </div>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,.6)', fontFamily: 'var(--font-ui)', marginBottom: 2 }}>Montant dû</div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: '#fff', letterSpacing: '-.02em' }}>
-                  {formatAmount(taxe)} <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,.7)' }}>FCFA</span>
+              <div className="text-right relative z-10">
+                <div className="text-sm font-medium text-white/50 mb-0.5">Total dû</div>
+                <div className="t-h1 !text-white !font-mono tracking-tight">
+                  {formatAmount(taxe)} <span className="text-xs font-medium text-white/60 ml-0.5">F</span>
                 </div>
               </div>
             </div>
 
-            <div style={{ padding: isMobile ? '16px' : '20px 24px' }}>
-              {/* Tabs */}
-              <div style={{ display: 'flex', background: 'var(--bg-sunken)', borderRadius: 10, padding: 3, marginBottom: 20 }}>
+            <div className="p-5 md:p-6">
+              <div className="flex bg-ink-50 rounded-2xl p-1 mb-6">
                 {(['qr', 'alias'] as const).map(t => (
-                  <button key={t} onClick={() => setPispiTab(t)} style={{
-                    flex: 1, padding: '8px 0', borderRadius: 8, fontSize: 13, fontWeight: 600,
-                    border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)',
-                    background: pispiTab === t ? 'var(--paper-0)' : 'transparent',
-                    color: pispiTab === t ? 'var(--fg-1)' : 'var(--fg-3)',
-                    transition: 'all var(--dur-fast) var(--ease-standard)',
-                  }}>
-                    {t === 'qr' ? 'Scanner le QR code' : 'Saisir un alias'}
+                  <button 
+                    key={t} 
+                    onClick={() => setPispiTab(t)} 
+                    className={`flex-1 py-2.5 rounded-2xl text-[13px] font-bold transition-all cursor-pointer border-none font-ui ${
+                      pispiTab === t ? 'bg-white text-ink-900 ' : 'text-ink-500 hover:text-ink-700'
+                    }`}
+                  >
+                    {t === 'qr' ? 'QR Code' : 'Numéro / Alias'}
                   </button>
                 ))}
               </div>
 
-              {/* QR tab */}
               {pispiTab === 'qr' && (
-                <div style={{ textAlign: 'center' }}>
-                  {/* QR + logo centré */}
-                  <div style={{ display: 'inline-block', position: 'relative', padding: 8, background: 'var(--paper-0)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 14 }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=188x188&data=PISPI%3ACOTAX%3ACOCODY%3A${taxe}%3A${compteMap[taxType] ?? '70262'}%3ARC-2026-18501&qzone=1&color=082B57`}
-                      alt="QR code PI-SPI" width={188} height={188}
-                      style={{ display: 'block', borderRadius: 6 }}
-                    />
-                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', background: '#fff', borderRadius: 8, padding: 3 }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/assets/pispi-logo.png" alt="PI-SPI" width={36} height={36} style={{ display: 'block', borderRadius: 6 }} />
+                <div className="text-center">
+                  <div className="inline-block p-4 bg-white border border-ink-100 rounded-2xl mb-5 ">
+                    <div className="relative">
+                      <img
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=PISPI%3ACOTAX%3A${taxe}&qzone=1&color=082B57`}
+                        alt="QR code PI-SPI" className="w-[180px] h-[180px] block rounded-2xl"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="bg-white p-1 rounded-2xl  border border-ink-50">
+                          <img src="/assets/pispi-logo.png" alt="PI-SPI" className="w-8 h-8 rounded-md" />
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Réf + timer */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 16, fontSize: 12 }}>
-                    <span style={{ color: 'var(--fg-3)' }}>Réf <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--fg-1)', fontWeight: 600 }}>RC-2026-18501</span></span>
-                    <span style={{ width: 1, height: 10, background: 'var(--border-strong)', display: 'inline-block' }} />
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: pispiTimer < 60 ? 'var(--terra-600)' : 'var(--fg-3)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
-                      <Clock size={11} style={{ flexShrink: 0 }} />{formatTimer(pispiTimer)}
+                  <div className="flex items-center justify-center gap-4 mb-6">
+                    <span className="text-[12px] font-medium text-ink-500">Réf <span className="font-mono text-ink-900 font-bold">RC-2026-18</span></span>
+                    <div className="w-px h-3 bg-ink-200" />
+                    <span className={`flex items-center gap-1.5 text-[12px] font-bold font-mono ${pispiTimer < 60 ? 'text-terra-600 animate-pulse' : 'text-ink-900'}`}>
+                      <Clock size={12} className="shrink-0" />{formatTimer(pispiTimer)}
                     </span>
                   </div>
 
-                  {/* Wallets acceptés — logos */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
+                  <div className="flex items-center justify-center gap-2.5 flex-wrap">
                     {WALLETS.map(w => (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img key={w.name} src={w.logo} alt={w.name} title={w.name} width={30} height={30}
-                        style={{ borderRadius: 8, border: '1px solid var(--border)', objectFit: 'cover', background: 'var(--paper-0)' }}
-                      />
+                      <img key={w.name} src={w.logo} alt={w.name} className="w-8 h-8 rounded-2xl border border-ink-100 object-cover bg-white" />
                     ))}
-                    <span style={{ fontSize: 11, color: 'var(--fg-3)' }}>+ banques UEMOA</span>
+                    <span className="text-[10px] text-ink-400 font-bold uppercase tracking-wider ml-1">+ BANQUES</span>
                   </div>
                 </div>
               )}
 
-              {/* Alias tab */}
               {pispiTab === 'alias' && (
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 6 }}>Votre alias de paiement</label>
+                  <label className="text-sm font-medium text-ink-600 mb-2 block">Numéro ou alias de paiement</label>
                   <input
                     value={pispiAlias}
                     onChange={e => setPispiAlias(e.target.value)}
                     placeholder="+225 07 XX XX XX XX"
-                    style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--fg-1)', marginBottom: 8 }}
+                    className="app-input !text-lg !py-3.5 !font-mono text-center tracking-wider !bg-ink-50"
                   />
-                  <div style={{ fontSize: 11, color: 'var(--fg-3)', marginBottom: 16 }}>Numéro de téléphone, identifiant wallet ou alias bancaire UEMOA</div>
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 4, alignItems: 'center' }}>
+                  <div className="text-sm font-medium text-ink-400 mt-2 mb-6 text-center lowercase italic tracking-normal">wallet, téléphone ou identifiant bancaire</div>
+                  
+                  <div className="flex items-center justify-center gap-2.5 flex-wrap">
                     {WALLETS.map(w => (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img key={w.name} src={w.logo} alt={w.name} title={w.name} width={28} height={28}
-                        style={{ borderRadius: 7, border: '1px solid var(--border)', objectFit: 'cover', background: 'var(--paper-0)' }}
-                      />
+                      <img key={w.name} src={w.logo} alt={w.name} className="w-8 h-8 rounded-2xl border border-ink-100" />
                     ))}
-                    <span style={{ fontSize: 11, color: 'var(--fg-3)' }}>+ banques UEMOA</span>
                   </div>
                 </div>
               )}
 
-              {/* Actions */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 20, paddingTop: 20, borderTop: '1px solid var(--border)' }}>
-                <button onClick={() => setStep(2)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+              <div className="mt-8 pt-6 border-t border-ink-100 flex justify-between items-center">
+                <Button variant="ghost" onClick={() => setStep(2)} className="!border-none !px-2">
                   <ChevronLeft size={14} /> Retour
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={submit}
                   disabled={loading || !canConfirm}
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 22px',
-                    borderRadius: 10, fontSize: 13, fontWeight: 700, border: 'none',
-                    fontFamily: 'var(--font-ui)', letterSpacing: '.01em',
-                    background: !canConfirm ? 'var(--bg-sunken)' : 'var(--secondary)',
-                    color: !canConfirm ? 'var(--fg-3)' : 'var(--secondary-on)',
-                    cursor: loading ? 'wait' : !canConfirm ? 'not-allowed' : 'pointer',
-                  }}
+                  variant={!canConfirm ? 'ghost' : 'secondary'}
+                  className={`!px-8 !py-3.5 !rounded-2xl ${loading ? 'opacity-80' : ''}`}
                 >
-                  {loading
-                    ? <><div style={{ width: 13, height: 13, borderRadius: '50%', border: '2px solid rgba(255,255,255,.35)', borderTopColor: '#fff', animation: 'spin .7s linear infinite' }} />Traitement…</>
-                    : pispiTab === 'qr'
-                      ? <><CheckCircle size={14} />Paiement scanné — confirmer</>
-                      : <>Envoyer la demande<ArrowRight size={14} /></>
-                  }
-                </button>
+                  {loading ? (
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Traitement…</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      {pispiTab === 'qr' ? 'Confirmer le scan' : 'Payer maintenant'}
+                      <ArrowRight size={16} />
+                    </div>
+                  )}
+                </Button>
               </div>
             </div>
           </div>
@@ -1075,69 +943,70 @@ function ScreenHistorique({ go }: { go: (s: Screen) => void }) {
   const totalPaye = HISTORIQUE.filter(r => r.status === 'ok').reduce((s, r) => s + r.montant, 0)
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: '-.4px', marginBottom: 4 }}>Mes paiements</h1>
-        <p style={{ fontSize: 14, color: 'var(--fg-3)' }}>Historique complet · Avril 2026</p>
+    <div className="max-w-[900px] mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-xl font-display font-semibold mb-1">Mes paiements</h1>
+        <p className="text-xs text-ink-500">Historique complet · Avril 2026</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: 14, marginBottom: 24 }}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         {[
-          { label: 'Total payé (avril)', value: formatAmount(totalPaye), unit: 'FCFA', color: 'var(--forest-600)' },
-          { label: 'Reçus émis', value: String(HISTORIQUE.filter(r => r.status === 'ok').length), unit: 'reçus', color: 'var(--lagune-600)' },
-          { label: 'Jours en retard', value: '1', unit: 'à régulariser', color: 'var(--terra-600)' },
+          { label: 'Total payé (avril)', value: formatAmount(totalPaye), unit: 'FCFA', color: 'text-forest-600' },
+          { label: 'Reçus émis', value: String(HISTORIQUE.filter(r => r.status === 'ok').length), unit: 'reçus', color: 'text-lagune-600' },
+          { label: 'Jours en retard', value: '1', unit: 'à régulariser', color: 'text-terra-600' },
         ].map(c => (
-          <div key={c.label} style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', padding: '16px 20px', boxShadow: 'var(--elev-1)' }}>
-            <div style={{ fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, marginBottom: 8 }}>{c.label}</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 600, color: c.color, letterSpacing: '-.02em' }}>
-              {c.value}<span style={{ fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--fg-3)', marginLeft: 6, fontWeight: 500 }}>{c.unit}</span>
+          <div key={c.label} className="bg-white rounded-2xl border border-ink-100  p-5">
+            <div className="text-sm font-medium text-ink-500 mb-2 font-bold uppercase tracking-wider">{c.label}</div>
+            <div className={`t-h1 !text-2xl ${c.color}`}>
+              {c.value}<span className="text-xs text-ink-500 text-ink-400 ml-2 font-medium">{c.unit}</span>
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', overflow: 'hidden', boxShadow: 'var(--elev-1)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: isMobile ? 600 : 'auto' }}>
-          <thead>
-            <tr>
-              {['N° reçu', 'Date', 'Type de taxe', 'Montant', 'PSP', 'Statut', ''].map((h, i) => (
-                <th key={i} style={{ textAlign: i === 3 ? 'right' : 'left', padding: '9px 14px', fontSize: 11, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, borderBottom: '1px solid var(--border)', background: 'var(--paper-50)' }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {HISTORIQUE.map(r => (
-              <tr key={r.num}>
-                <td style={{ padding: '11px 14px', fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--fg-1)', borderBottom: '1px solid var(--border-subtle)' }}>{r.num}</td>
-                <td style={{ padding: '11px 14px', fontSize: 13, color: 'var(--fg-2)', borderBottom: '1px solid var(--border-subtle)' }}>{r.date}</td>
-                <td style={{ padding: '11px 14px', fontSize: 13, color: 'var(--fg-1)', borderBottom: '1px solid var(--border-subtle)' }}>{r.type}</td>
-                <td style={{ padding: '11px 14px', textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: 600, fontSize: 14, borderBottom: '1px solid var(--border-subtle)', color: r.status === 'ok' ? 'var(--fg-1)' : 'var(--terra-700)' }}>
-                  {r.montant ? `${formatAmount(r.montant)} FCFA` : '—'}
-                </td>
-                <td style={{ padding: '11px 14px', fontSize: 13, color: 'var(--fg-2)', borderBottom: '1px solid var(--border-subtle)' }}>{r.psp}</td>
-                <td style={{ padding: '11px 14px', borderBottom: '1px solid var(--border-subtle)' }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 9px', borderRadius: 999, fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.04em', background: r.status === 'ok' ? 'var(--forest-100)' : 'var(--terra-100)', color: r.status === 'ok' ? 'var(--forest-900)' : 'var(--terra-900)' }}>
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: r.status === 'ok' ? 'var(--forest-600)' : 'var(--terra-500)', flexShrink: 0 }} />
-                    {r.status === 'ok' ? 'Payé' : 'Impayé'}
-                  </span>
-                </td>
-                <td style={{ padding: '11px 14px', borderBottom: '1px solid var(--border-subtle)' }}>
-                  {r.status === 'ok' && (
-                    <button style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 7, fontSize: 12, fontWeight: 600, cursor: 'pointer', background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', fontFamily: 'var(--font-ui)' }}>
-                      <Download size={12} /> PDF
-                    </button>
-                  )}
-                </td>
+      <div className="bg-white rounded-2xl border border-ink-100  !p-0 overflow-hidden ">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse min-w-[600px]">
+            <thead>
+              <tr className="bg-paper-50 border-b border-ink-100">
+                {['N° reçu', 'Date', 'Type de taxe', 'Montant', 'PSP', 'Statut', ''].map((h, i) => (
+                  <th key={i} className={`px-4 py-3.5 text-sm font-medium text-ink-500 font-bold uppercase tracking-wider text-left ${i === 3 ? 'text-right' : ''}`}>{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-ink-100">
+              {HISTORIQUE.map(r => (
+                <tr key={r.num} className="hover:bg-paper-50/50 transition-colors">
+                  <td className="px-4 py-4 font-mono text-[13px] text-ink-900">{r.num}</td>
+                  <td className="px-4 py-4 text-[13px] text-ink-600">{r.date}</td>
+                  <td className="px-4 py-4 text-[13px] text-ink-900 font-medium">{r.type}</td>
+                  <td className={`px-4 py-4 text-right font-mono font-bold text-[14px] ${r.status === 'ok' ? 'text-ink-900' : 'text-terra-700'}`}>
+                    {r.montant ? `${formatAmount(r.montant)} F` : '—'}
+                  </td>
+                  <td className="px-4 py-4 text-[13px] text-ink-600">{r.psp}</td>
+                  <td className="px-4 py-4">
+                    <Pill variant={r.status === 'ok' ? 'success' : 'danger'} size="sm">
+                      {r.status === 'ok' ? 'Payé' : 'Impayé'}
+                    </Pill>
+                  </td>
+                  <td className="px-4 py-4 text-right">
+                    {r.status === 'ok' && (
+                      <Button variant="ghost" className="!px-2.5 !py-1.5 !text-[12px]">
+                        <Download size={14} /> PDF
+                      </Button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div style={{ marginTop: 20, textAlign: 'center' }}>
-        <button onClick={() => go('declaration')} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
-          <FileText size={14} /> Nouvelle déclaration
-        </button>
+      <div className="mt-8 text-center">
+        <Button onClick={() => go('declaration')}>
+          <FileText size={16} /> Nouvelle déclaration
+        </Button>
       </div>
     </div>
   )
@@ -1148,69 +1017,73 @@ function ScreenProfil({ go }: { go: (s: Screen) => void }) {
   const { isMobile } = useBreakpoint()
   const totalMensuel = ACTIVITES_CONTRIBUABLE.filter(a => a.statut === 'actif').reduce((s, a) => s + a.taxeMensuelle, 0)
   return (
-    <div style={{ maxWidth: 640, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: '-.4px', marginBottom: 4 }}>Mon profil</h1>
-        <p style={{ fontSize: 14, color: 'var(--fg-3)' }}>Contribuable enregistré à la Mairie de Cocody</p>
+    <div className="max-w-[640px] mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-xl font-display font-semibold mb-1">Mon profil</h1>
+        <p className="text-xs text-ink-500">Contribuable enregistré à la Mairie de Cocody</p>
       </div>
 
-      <div style={{ background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)', padding: 24, marginBottom: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, paddingBottom: 20, borderBottom: '1px solid var(--border)' }}>
-          <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--ocre-500)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18, flexShrink: 0 }}>AK</div>
+      <div className="bg-white rounded-2xl border border-ink-100  p-6 md:p-8 mb-6">
+        <div className="flex items-center gap-5 mb-8 pb-6 border-b border-ink-100">
+          <div className="w-16 h-16 rounded-full bg-ocre-500 text-white flex items-center justify-center font-bold text-2xl ">AK</div>
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 600 }}>Adjoua Kouamé</div>
-            <div style={{ fontSize: 13, color: 'var(--fg-3)', marginTop: 2 }}>{ACTIVITES_CONTRIBUABLE.length} activités enregistrées · Cocody</div>
+            <div className="text-2xl font-display font-semibold text-ink-900">Adjoua Kouamé</div>
+            <div className="text-xs text-ink-500 text-ink-500 mt-1">{ACTIVITES_CONTRIBUABLE.length} activités enregistrées · Cocody</div>
           </div>
         </div>
 
-        <div style={{ fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, marginBottom: 12 }}>Identité fiscale</div>
-        {[
-          ['NUI', 'NUI-2026-12401'],
-          ['Commune', 'Cocody'],
-          ['Téléphone', '+225 07 12 34 56 78'],
-          ['Inscription', 'Janvier 2026'],
-        ].map(([k, v]) => (
-          <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', fontSize: 14, borderBottom: '1px solid var(--border-subtle)' }}>
-            <span style={{ color: 'var(--fg-3)' }}>{k}</span>
-            <span style={{ fontWeight: 500, color: 'var(--fg-1)', fontFamily: ['NUI', 'Téléphone'].includes(k) ? 'var(--font-mono)' : 'var(--font-ui)' }}>{v}</span>
-          </div>
-        ))}
+        <div className="text-sm font-medium text-ink-400 mb-4 font-bold uppercase tracking-wider">Identité fiscale</div>
+        <div className="space-y-1 mb-8">
+          {[
+            ['NUI', 'NUI-2026-12401'],
+            ['Commune', 'Cocody'],
+            ['Téléphone', '+225 07 12 34 56 78'],
+            ['Inscription', 'Janvier 2026'],
+          ].map(([k, v]) => (
+            <div key={k} className="flex justify-between py-3 border-b border-ink-50 last:border-0">
+              <span className="text-[14px] text-ink-500 font-medium">{k}</span>
+              <span className={`text-[14px] font-bold text-ink-900 ${['NUI', 'Téléphone'].includes(k) ? 'font-mono' : ''}`}>{v}</span>
+            </div>
+          ))}
+        </div>
 
         {/* Activités résumé */}
-        <div style={{ fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, marginTop: 20, marginBottom: 12 }}>
+        <div className="text-sm font-medium text-ink-400 mb-4 font-bold uppercase tracking-wider">
           Activités &amp; régimes fiscaux
         </div>
-        {ACTIVITES_CONTRIBUABLE.map(act => (
-          <div key={act.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border-subtle)', gap: 12 }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg-1)' }}>{act.nom}</div>
-              <div style={{ fontSize: 11, color: 'var(--fg-3)' }}>{act.regime} · Cpt {act.compte}</div>
+        <div className="space-y-3 mb-4">
+          {ACTIVITES_CONTRIBUABLE.map(act => (
+            <div key={act.id} className="flex justify-between items-center p-3 rounded-2xl bg-paper-50 border border-ink-100 group">
+              <div className="flex-1 min-w-0">
+                <div className="text-[13px] font-bold text-ink-900 leading-tight">{act.nom}</div>
+                <div className="text-[11px] text-ink-500 mt-0.5">{act.regime}</div>
+              </div>
+              <div className="flex items-center gap-3 shrink-0 ml-4">
+                <span className="t-amount font-bold text-lagune-700">{formatAmount(act.taxeMensuelle)} F</span>
+                <Pill variant={act.statut === 'actif' ? 'success' : 'warning'} size="sm">
+                  {act.statut === 'actif' ? 'Actif' : 'Attente'}
+                </Pill>
+              </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'var(--lagune-700)' }}>{formatAmount(act.taxeMensuelle)} F/mois</span>
-              <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 999, background: act.statut === 'actif' ? 'var(--forest-100)' : 'var(--ocre-100)', color: act.statut === 'actif' ? 'var(--forest-900)' : 'var(--ocre-900)' }}>
-                {act.statut === 'actif' ? 'Actif' : 'Attente'}
-              </span>
-            </div>
-          </div>
-        ))}
-        <button onClick={() => go('mes_activites')} style={{ marginTop: 12, fontSize: 12, color: 'var(--lagune-600)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)', fontWeight: 600, padding: 0 }}>
-          Voir le détail complet →
+          ))}
+        </div>
+        <button onClick={() => go('mes_activites')} className="text-xs text-ink-500 !text-lagune-600 font-bold hover:underline mb-8 block">
+          Voir le détail complet des activités →
         </button>
 
-        <div style={{ fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, marginTop: 20, marginBottom: 12 }}>Solde fiscal — Avril 2026</div>
-        <div style={{ background: 'var(--forest-50)', borderRadius: 10, padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid var(--forest-200)' }}>
+        <div className="text-sm font-medium text-ink-400 mb-4 font-bold uppercase tracking-wider">Solde fiscal — Avril 2026</div>
+        <div className="bg-forest-50 rounded-2xl p-5 flex justify-between items-center border border-forest-200">
           <div>
-            <div style={{ fontSize: 12, color: 'var(--forest-700)', marginBottom: 2 }}>Total mensuel toutes activités</div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 700, color: 'var(--forest-900)' }}>{formatAmount(totalMensuel)} FCFA</div>
+            <div className="text-[12px] text-forest-700 font-bold mb-1">Total mensuel toutes activités</div>
+            <div className="t-h2 !text-xl !font-mono text-forest-900">{formatAmount(totalMensuel)} FCFA</div>
           </div>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 999, fontSize: 12, fontWeight: 700, background: 'var(--forest-600)', color: '#fff' }}>À jour ✓</span>
+          <Pill variant="success" className="!px-5 !py-2 !text-[13px] font-bold ">À jour ✓</Pill>
         </div>
       </div>
 
-      <button style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--terra-700)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
-        <LogOut size={14} /> Se déconnecter
-      </button>
+      <Button variant="ghost" className="!text-terra-600 hover:!bg-terra-50 hover:!text-terra-700">
+        <LogOut size={16} /> Se déconnecter
+      </Button>
     </div>
   )
 }
@@ -1334,22 +1207,18 @@ function ScreenNouvelleActivite({ go }: { go: (s: Screen) => void }) {
 
   if (step === 'done') {
     return (
-      <div style={{ maxWidth: 580, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
-        <div style={{ textAlign: 'center', padding: '40px 0' }}>
-          <div style={{
-            width: 72, height: 72, borderRadius: '50%', background: 'var(--lagune-100)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 20px', boxShadow: '0 0 0 8px var(--lagune-100)',
-          }}>
-            <CheckCircle size={34} style={{ color: 'var(--lagune-700)' }} />
+      <div className="max-w-[580px] mx-auto px-4 py-8">
+        <div className="text-center py-10">
+          <div className="w-[72px] h-[72px] rounded-full bg-lagune-100 flex items-center justify-center mx-auto mb-6 shadow-[0_0_0_8px_var(--lagune-50)]">
+            <CheckCircle size={34} className="text-lagune-700" />
           </div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 600, marginBottom: 8 }}>Déclaration enregistrée</h2>
-          <p style={{ color: 'var(--fg-3)', fontSize: 14, marginBottom: 32, maxWidth: 400, margin: '0 auto 32px', lineHeight: 1.6 }}>
-            Votre demande de déclaration d&apos;activité a été transmise à la Mairie de Cocody. Un agent se déplacera pour constater votre activité dans les <b>{activiteChoisie?.delaiTraitement ?? '5 jours ouvrés'}</b>.
+          <h2 className="text-2xl font-display font-semibold text-ink-900 mb-2">Déclaration enregistrée</h2>
+          <p className="text-xs text-ink-500 mb-8 max-w-[420px] mx-auto leading-relaxed">
+            Votre demande a été transmise à la Mairie. Un agent se déplacera pour constater votre activité dans les <b>{activiteChoisie?.delaiTraitement ?? '5 jours ouvrés'}</b>.
           </p>
 
-          <div style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', padding: '20px 24px', maxWidth: 400, margin: '0 auto 28px', textAlign: 'left' }}>
-            <div style={{ fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, marginBottom: 14 }}>Récapitulatif</div>
+          <div className="bg-white rounded-2xl border border-ink-100  p-6 max-w-[400px] mx-auto mb-8 text-left divide-y divide-ink-100">
+            <div className="text-sm font-medium text-ink-500 font-bold uppercase tracking-wider mb-4">Récapitulatif</div>
             {[
               ['N° dossier', 'DA-2026-04289'],
               ['Activité', activiteChoisie?.label ?? '—'],
@@ -1358,32 +1227,30 @@ function ScreenNouvelleActivite({ go }: { go: (s: Screen) => void }) {
               ...(gpsLat && gpsLng ? [['GPS', `${gpsLat}, ${gpsLng}`] as [string, string]] : []),
               ['Étape suivante', 'Visite agent constat'],
             ].map(([k, v]) => (
-              <div key={k} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '6px 0', fontSize: 13, borderBottom: '1px solid var(--border-subtle)' }}>
-                <span style={{ color: 'var(--fg-3)', flexShrink: 0 }}>{k}</span>
-                <span style={{ fontWeight: 600, color: 'var(--fg-1)', textAlign: 'right' }}>{v}</span>
+              <div key={k} className="flex justify-between gap-4 py-3 first:pt-0">
+                <span className="text-[13px] text-ink-500 shrink-0">{k}</span>
+                <span className="text-[13px] font-bold text-ink-900 text-right">{v}</span>
               </div>
             ))}
           </div>
 
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 10, padding: '14px 18px',
-            background: 'var(--ocre-100)', border: '1px solid var(--ocre-200)', borderRadius: 12,
-            maxWidth: 400, margin: '0 auto 28px', textAlign: 'left',
-          }}>
-            <Clock size={18} style={{ color: 'var(--ocre-700)', flexShrink: 0 }} />
-            <div style={{ fontSize: 13, color: 'var(--ocre-900)', lineHeight: 1.5 }}>
-              <b>Prochaine étape :</b> un agent de la brigade de constat passera vérifier votre établissement.
-              Veillez à être présent avec les pièces requises.
+          <div className="flex items-center gap-4 p-4 bg-ocre-50 border border-ocre-200 rounded-2xl max-w-[400px] mx-auto mb-8 text-left">
+            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 ">
+              <Clock size={20} className="text-ocre-600" />
+            </div>
+            <div className="text-[13px] text-ocre-900 leading-snug">
+              <b className="block mb-0.5">Visite de constat</b>
+              Un agent de la brigade de constat passera vérifier votre établissement. Veillez à être présent.
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
-            <button onClick={() => go('home')} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Button onClick={() => go('home')} variant="ghost">
               Retour à l&apos;accueil
-            </button>
-            <button onClick={() => go('historique')} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+            </Button>
+            <Button onClick={() => go('historique')} variant="primary">
               <History size={14} /> Suivi de mes dossiers
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -1391,14 +1258,14 @@ function ScreenNouvelleActivite({ go }: { go: (s: Screen) => void }) {
   }
 
   return (
-    <div style={{ maxWidth: 640, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: '-.4px', marginBottom: 4 }}>Déclarer une activité</h1>
-        <p style={{ fontSize: 14, color: 'var(--fg-3)' }}>Enregistrez votre activité sans vous déplacer · Un agent passera constater dans les délais indiqués</p>
+    <div className="max-w-[640px] mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-xl font-display font-semibold mb-1">Déclarer une activité</h1>
+        <p className="text-xs text-ink-500">Enregistrez votre activité sans vous déplacer · Délibération N°2025-172</p>
       </div>
 
       {/* Step indicator */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 28 }}>
+      <div className="flex items-center gap-0 mb-8 overflow-x-auto pb-2 scrollbar-hide">
         {STEPS.map((label, i) => {
           const n = i + 1
           const stepNum = typeof step === 'number' ? step : 4
@@ -1406,13 +1273,28 @@ function ScreenNouvelleActivite({ go }: { go: (s: Screen) => void }) {
           const isActive = stepNum === n
           return (
             <React.Fragment key={label}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: isDone ? 'pointer' : 'default' }} onClick={() => isDone && setStep(n as ActStep)}>
-                <div style={{ width: 30, height: 30, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, flexShrink: 0, background: isDone ? 'var(--forest-600)' : isActive ? 'var(--lagune-600)' : 'var(--bg-sunken)', color: isDone || isActive ? '#fff' : 'var(--fg-3)', boxShadow: isActive ? '0 0 0 4px var(--lagune-100)' : 'none' }}>
+              <div
+                className={`flex items-center gap-2.5 shrink-0 ${isDone ? 'cursor-pointer' : 'cursor-default'}`}
+                onClick={() => isDone && setStep(n as ActStep)}
+              >
+                <div className={`w-[30px] h-[30px] rounded-full flex items-center justify-center text-[13px] font-bold transition-all ${
+                  isDone ? 'bg-forest-600 text-white' : 
+                  isActive ? 'bg-lagune-600 text-white ring-4 ring-lagune-100' : 
+                  'bg-ink-100 text-ink-400'
+                }`}>
                   {isDone ? '✓' : n}
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 600, color: isActive ? 'var(--lagune-700)' : isDone ? 'var(--fg-2)' : 'var(--fg-3)' }}>{label}</span>
+                <span className={`text-[12px] font-bold whitespace-nowrap ${
+                  isActive ? 'text-lagune-700' : 
+                  isDone ? 'text-ink-700' : 
+                  'text-ink-400'
+                }`}>{label}</span>
               </div>
-              {i < STEPS.length - 1 && <div style={{ flex: 1, height: 2, margin: '0 8px', minWidth: 24, background: isDone ? 'var(--forest-500)' : 'var(--border)' }} />}
+              {i < STEPS.length - 1 && (
+                <div className={`flex-1 h-0.5 mx-2 min-w-[20px] ${
+                  isDone ? 'bg-forest-500' : 'bg-ink-200'
+                }`} />
+              )}
             </React.Fragment>
           )
         })}
@@ -1420,108 +1302,95 @@ function ScreenNouvelleActivite({ go }: { go: (s: Screen) => void }) {
 
       {/* ── Step 1: Type d'activité ── */}
       {step === 1 && (
-        <div style={{ background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)', padding: isMobile ? 16 : 24 }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Décrivez votre activité</h2>
+        <div className="bg-white rounded-2xl border border-ink-100  p-5 md:p-6">
+          <h2 className="text-sm font-semibold mb-5 font-display">Décrivez votre activité</h2>
 
           {/* ── Assistant IA — identification activité ── */}
           {actAiStep !== 'closed' && (
-            <div style={{ marginBottom: 20, borderRadius: 12, border: '1px solid var(--lagune-200)', background: 'var(--lagune-50)', overflow: 'hidden' }}>
-              {/* Header */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px' }}>
-                <div style={{ width: 30, height: 30, borderRadius: 8, background: 'var(--lagune-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Sparkles size={14} style={{ color: '#fff' }} />
+            <div className="mb-6 rounded-2xl border border-lagune-200 bg-lagune-50 overflow-hidden ">
+              <div className="flex items-center gap-3 p-4">
+                <div className="w-8 h-8 rounded-2xl bg-lagune-600 flex items-center justify-center shrink-0 ">
+                  <Sparkles size={14} className="text-white" />
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--lagune-900)' }}>Identification automatique</div>
-                  <div style={{ fontSize: 11, color: 'var(--lagune-600)' }}>Décrivez votre activité — l&apos;IA détermine votre catégorie et type d&apos;enregistrement</div>
+                <div className="flex-1">
+                  <div className="font-bold text-[13px] text-lagune-950">Identification automatique</div>
+                  <div className="text-[11px] text-lagune-700 font-medium">L&apos;IA détermine votre catégorie d&apos;activité</div>
                 </div>
               </div>
 
-              {/* Formulaire description */}
               {actAiStep === 'open' && (
-                <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '14px 14px 16px' }}>
-                  <div style={{ marginBottom: 10 }}>
-                    <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--lagune-700)', marginBottom: 4 }}>Décrivez votre activité *</label>
+                <div className="p-4 pt-0 border-t border-lagune-200">
+                  <div className="mt-4 mb-4">
+                    <label className="text-sm font-medium text-lagune-700 mb-1.5 block">Description de l&apos;activité *</label>
                     <textarea
                       value={actAiDesc}
                       onChange={e => setActAiDesc(e.target.value)}
-                      placeholder="Ex : Je tiens un salon de coiffure mixte au quartier Riviera 2, avec 2 employés. Je vends aussi des produits capillaires. Je ne suis pas à la patente."
+                      placeholder="Ex : Je tiens un salon de coiffure mixte au quartier Riviera 2..."
                       rows={3}
-                      style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--lagune-300)', background: '#fff', fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--fg-1)', resize: 'vertical', boxSizing: 'border-box' }}
+                      className="app-input !bg-white !border-lagune-200 focus:!border-lagune-500 !text-[13px]"
                     />
                   </div>
-                  <div style={{ marginBottom: 14 }}>
-                    <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--lagune-700)', marginBottom: 4 }}>Secteur principal (facultatif)</label>
+                  <div className="mb-5">
+                    <label className="text-sm font-medium text-lagune-700 mb-1.5 block">Secteur principal (facultatif)</label>
                     <select
                       value={actAiSecteur}
                       onChange={e => setActAiSecteur(e.target.value)}
-                      style={{ width: '100%', padding: '8px 10px', borderRadius: 7, border: '1px solid var(--lagune-300)', background: '#fff', fontFamily: 'var(--font-ui)', fontSize: 12, color: actAiSecteur ? 'var(--fg-1)' : 'var(--fg-3)' }}
+                      className="app-input !bg-white !border-lagune-200 !text-[13px]"
                     >
-                      <option value="">— Préciser le secteur (optionnel) —</option>
-                      {['Commerce & distribution', 'Artisanat & services à la personne', 'Restauration & alimentation', 'Transport', 'Santé & bien-être', 'Hôtellerie & hébergement', 'Événementiel & spectacle', 'Publicité & communication', 'Marché / ambulant', 'Autre'].map(s => (
+                      <option value="">— Choisir —</option>
+                      {['Commerce & distribution', 'Artisanat & services', 'Restauration', 'Transport', 'Marché / ambulant', 'Autre'].map(s => (
                         <option key={s} value={s}>{s}</option>
                       ))}
                     </select>
                   </div>
-                  <button
+                  <Button
                     onClick={analyserActivite}
                     disabled={!actAiDesc.trim()}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, border: 'none', cursor: actAiDesc.trim() ? 'pointer' : 'not-allowed', fontFamily: 'var(--font-ui)', background: actAiDesc.trim() ? 'var(--lagune-600)' : 'var(--bg-sunken)', color: actAiDesc.trim() ? '#fff' : 'var(--fg-3)' }}
+                    className="w-full !py-2.5 !text-[13px]"
                   >
-                    <Sparkles size={13} /> Identifier mon activité
-                  </button>
+                    <Sparkles size={14} /> Identifier mon activité
+                  </Button>
                 </div>
               )}
 
-              {/* Chargement */}
               {actAiStep === 'loading' && (
-                <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '16px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid var(--lagune-300)', borderTopColor: 'var(--lagune-600)', animation: 'spin 0.7s linear infinite', flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, color: 'var(--lagune-700)', fontFamily: 'var(--font-ui)' }}>Identification en cours…</span>
+                <div className="p-5 border-t border-lagune-200 flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full border-2 border-lagune-300 border-t-lagune-600 animate-spin" />
+                  <span className="text-[13px] text-lagune-700 font-medium font-ui">Identification en cours…</span>
                 </div>
               )}
 
-              {/* Résultat */}
               {actAiStep === 'result' && actAiResult && (
-                <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '14px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                    <CheckCircle size={15} style={{ color: 'var(--forest-600)', flexShrink: 0 }} />
-                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--lagune-900)' }}>
+                <div className="p-4 border-t border-lagune-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <CheckCircle size={15} className="text-forest-600" />
+                    <span className="font-bold text-[14px] text-lagune-950">
                       {TYPES_ACTIVITES.find(a => a.id === actAiResult.activiteId)?.label ?? actAiResult.regime}
                     </span>
-                    {!actAiResult.fiable && <AlertCircle size={13} style={{ color: 'var(--ocre-600)', flexShrink: 0 }} />}
                   </div>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
-                    <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--lagune-700)', background: 'var(--lagune-100)', padding: '2px 8px', borderRadius: 6 }}>{actAiResult.compte}</span>
-                    <span style={{ fontSize: 11, color: 'var(--fg-3)', background: 'var(--bg-sunken)', padding: '2px 8px', borderRadius: 6 }}>{actAiResult.categorie}</span>
-                    <span style={{ fontSize: 11, color: 'var(--fg-3)', background: 'var(--bg-sunken)', padding: '2px 8px', borderRadius: 6 }}>{actAiResult.tarifApplicable}</span>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <span className="text-sm font-medium bg-lagune-100 text-lagune-700 px-2 py-0.5 rounded font-mono font-bold">{actAiResult.compte}</span>
+                    <span className="text-sm font-medium bg-paper-100 text-ink-500 px-2 py-0.5 rounded font-bold uppercase tracking-wider">{actAiResult.categorie}</span>
                   </div>
-                  <p style={{ fontSize: 12, color: 'var(--fg-2)', lineHeight: 1.55, marginBottom: 12 }}>{actAiResult.justification}</p>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    <button
-                      onClick={confirmerActivite}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 7, fontSize: 12, fontWeight: 600, background: 'var(--forest-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
-                    >
-                      <CheckCircle size={12} /> Confirmer cette activité
-                    </button>
-                    <button
-                      onClick={() => setActAiStep('open')}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 12px', borderRadius: 7, fontSize: 12, fontWeight: 600, background: 'transparent', border: '1px solid var(--lagune-300)', color: 'var(--lagune-700)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
-                    >
-                      Modifier la description
-                    </button>
+                  <p className="text-[12px] text-ink-700 leading-relaxed mb-4">{actAiResult.justification}</p>
+                  <div className="flex gap-2">
+                    <Button onClick={confirmerActivite} className="!py-2 !text-[12px] !px-4 bg-forest-600 hover:bg-forest-700">
+                      Confirmer cette activité
+                    </Button>
+                    <Button onClick={() => setActAiStep('open')} variant="ghost" className="!py-2 !text-[12px] !px-4 !border-lagune-200 !text-lagune-700 hover:!bg-lagune-100">
+                      Modifier
+                    </Button>
                   </div>
                 </div>
               )}
 
-              {/* Erreur */}
               {actAiStep === 'error' && (
-                <div style={{ borderTop: '1px solid var(--lagune-200)', padding: '12px 14px' }}>
-                  <div style={{ fontSize: 12, color: 'var(--terra-700)', display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-                    <AlertCircle size={13} style={{ flexShrink: 0, marginTop: 1 }} />
+                <div className="p-4 border-t border-lagune-200">
+                  <div className="text-[12px] text-terra-700 bg-terra-50 p-3 rounded-2xl border border-terra-100 flex items-start gap-2">
+                    <AlertCircle size={14} className="shrink-0 mt-0.5" />
                     <span>{actAiError}</span>
                   </div>
-                  <button onClick={() => setActAiStep('open')} style={{ marginTop: 8, fontSize: 12, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--lagune-600)', fontFamily: 'var(--font-ui)', fontWeight: 600, padding: 0 }}>
+                  <button onClick={() => setActAiStep('open')} className="mt-2.5 text-[12px] font-bold text-lagune-600 hover:underline">
                     ↩ Réessayer
                   </button>
                 </div>
@@ -1529,41 +1398,40 @@ function ScreenNouvelleActivite({ go }: { go: (s: Screen) => void }) {
             </div>
           )}
 
-          {/* Sélection manuelle — toujours accessible */}
-          <div style={{ marginBottom: 16 }}>
+          <div className="mb-6">
             <button
               onClick={() => setActAiStep(s => s === 'closed' ? 'open' : 'closed')}
-              style={{ fontSize: 12, color: 'var(--lagune-600)', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)', padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}
+              className="flex items-center gap-2 text-[12px] font-bold text-lagune-600 hover:underline transition-all"
             >
-              <ChevronDown size={12} style={{ transform: actAiStep === 'closed' ? 'none' : 'rotate(180deg)', transition: 'transform .2s' }} />
-              {actAiStep === 'closed' ? 'Utiliser l\'assistant IA' : 'Choisir manuellement dans la liste'}
+              <ChevronDown size={14} className={`transition-transform ${actAiStep === 'closed' ? '' : 'rotate-180'}`} />
+              {actAiStep === 'closed' ? "Utiliser l'assistant intelligent" : "Choisir manuellement dans la liste"}
             </button>
           </div>
 
           {actAiStep === 'closed' && (
-            <>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 5 }}>Catégorie</label>
-                <select value={categorie} onChange={e => { setCategorie(e.target.value); setActiviteId('') }} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-1)' }}>
+            <div className="space-y-5">
+              <div>
+                <label className="text-sm font-medium text-ink-600 mb-1.5 block">Catégorie</label>
+                <select value={categorie} onChange={e => { setCategorie(e.target.value); setActiviteId('') }} className="app-input text-[14px]">
                   <option value="">— Toutes les catégories —</option>
                   {CATEGORIES_ACTIVITES.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
-              <div style={{ marginBottom: 20 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 5 }}>Type d&apos;activité *</label>
-                <select value={activiteId} onChange={e => setActiviteId(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: `1px solid ${activiteId ? 'var(--lagune-500)' : 'var(--border)'}`, background: 'var(--paper-0)', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-1)' }}>
+              <div>
+                <label className="text-sm font-medium text-ink-600 mb-1.5 block">Type d&apos;activité *</label>
+                <select value={activiteId} onChange={e => setActiviteId(e.target.value)} className={`app-input text-[14px] ${activiteId ? 'border-lagune-400 ring-2 ring-lagune-50' : ''}`}>
                   <option value="">— Sélectionnez une activité —</option>
                   {activitesFiltrees.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
                 </select>
               </div>
-            </>
+            </div>
           )}
 
-          {/* Fiche activité */}
+          {/* Fiche activité — Carte détaillée si sélectionnée */}
           {activiteChoisie && (
-            <div style={{ background: 'var(--lagune-50)', border: '1px solid var(--lagune-200)', borderRadius: 12, padding: '16px 18px', marginBottom: 20 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--lagune-900)', marginBottom: 12 }}>{activiteChoisie.label}</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
+            <div className="mt-6 bg-lagune-50 border border-lagune-200 rounded-2xl p-5 md:p-6 ">
+              <div className="text-sm font-semibold !text-base text-lagune-950 mb-5 pb-4 border-b border-lagune-200/50">{activiteChoisie.label}</div>
+              <div className="grid grid-cols-2 gap-y-5 gap-x-4 mb-6">
                 {[
                   ['Régime fiscal', activiteChoisie.regimeFiscal],
                   ['Compte SYSCOHADA', activiteChoisie.compte],
@@ -1571,213 +1439,177 @@ function ScreenNouvelleActivite({ go }: { go: (s: Screen) => void }) {
                   ['Délai traitement', activiteChoisie.delaiTraitement],
                 ].map(([k, v]) => (
                   <div key={k}>
-                    <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '.06em', color: 'var(--lagune-600)', fontWeight: 600, marginBottom: 2 }}>{k}</div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--lagune-900)', fontFamily: k === 'Compte SYSCOHADA' ? 'var(--font-mono)' : 'var(--font-ui)' }}>{v}</div>
+                    <div className="text-xs font-semibold uppercase tracking-widest text-lagune-600 mb-1 font-bold uppercase tracking-wider">{k}</div>
+                    <div className={`text-[13px] font-bold text-lagune-900 ${k === 'Compte SYSCOHADA' ? 'font-mono' : ''}`}>{v}</div>
                   </div>
                 ))}
               </div>
               <div>
-                <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '.06em', color: 'var(--lagune-600)', fontWeight: 600, marginBottom: 6 }}>Pièces requises</div>
-                {activiteChoisie.pieceRequises.map((p, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--lagune-800)', marginBottom: 3 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--lagune-500)', flexShrink: 0 }} />
-                    {p}
-                  </div>
-                ))}
+                <div className="text-xs font-semibold uppercase tracking-widest text-lagune-600 mb-3 font-bold uppercase tracking-wider">Pièces requises lors du constat</div>
+                <div className="space-y-2">
+                  {activiteChoisie.pieceRequises.map((p, i) => (
+                    <div key={i} className="flex items-start gap-2.5 text-[12px] text-lagune-800 font-medium">
+                      <CheckCircle size={14} className="text-lagune-400 shrink-0 mt-0.5" />
+                      {p}
+                    </div>
+                  ))}
+                </div>
               </div>
               {activiteChoisie.note && (
-                <div style={{ marginTop: 10, padding: '8px 10px', background: 'var(--ocre-50, #FFFBF0)', border: '1px solid var(--ocre-200)', borderRadius: 8, fontSize: 11, color: 'var(--ocre-900)', lineHeight: 1.5 }}>
-                  {activiteChoisie.note}
+                <div className="mt-5 p-3.5 bg-white/60 border border-lagune-200 rounded-2xl text-[11px] text-lagune-700 leading-relaxed italic">
+                  Note : {activiteChoisie.note}
                 </div>
               )}
             </div>
           )}
 
-          <div style={{ height: 1, background: 'var(--border)', marginBottom: 20 }} />
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button onClick={() => activiteId && setStep(2)} disabled={!activiteId} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: activiteId ? 'var(--lagune-600)' : 'var(--bg-sunken)', color: activiteId ? '#fff' : 'var(--fg-3)', border: 'none', cursor: activiteId ? 'pointer' : 'not-allowed', fontFamily: 'var(--font-ui)' }}>
+          <div className="mt-8 pt-6 border-t border-ink-100 flex justify-end">
+            <Button onClick={() => activiteId && setStep(2)} disabled={!activiteId}>
               Continuer <ArrowRight size={14} />
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
       {/* ── Step 2: Informations ── */}
       {step === 2 && (
-        <div style={{ background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)', padding: isMobile ? 16 : 24 }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Informations sur votre établissement</h2>
-          <p style={{ fontSize: 13, color: 'var(--fg-3)', marginBottom: 20 }}>{activiteChoisie?.label}</p>
+        <div className="bg-white rounded-2xl border border-ink-100  p-5 md:p-6">
+          <div className="mb-6 pb-5 border-b border-ink-100">
+            <h2 className="text-lg font-display font-semibold mb-1">Détails de l&apos;établissement</h2>
+            <p className="text-xs text-ink-500 !text-lagune-700 font-medium">{activiteChoisie?.label}</p>
+          </div>
 
-          {[
-            { label: "Nom de l'établissement *", val: nom, set: setNom, placeholder: 'Ex : Salon Bijou, Épicerie du Carrefour…' },
-            { label: 'Adresse complète *', val: adresse, set: setAdresse, placeholder: 'Ex : Rue des Jardins, Cocody Riviera 2' },
-            { label: 'NUI / RCCM (si existant)', val: nui, set: setNui, placeholder: 'Ex : NUI-2026-XXXXX' },
-            { label: 'Téléphone principal *', val: tel, set: setTel, placeholder: '+225 07 XX XX XX XX' },
-          ].map(({ label, val, set, placeholder }) => (
-            <div key={label} style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 5 }}>{label}</label>
-              <input value={val} onChange={e => set(e.target.value)} placeholder={placeholder} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-1)' }} />
+          <div className="space-y-5">
+            {[
+              { label: "Nom commercial *", val: nom, set: setNom, placeholder: 'Ex : Salon Bijou, Épicerie Riviera…' },
+              { label: 'Adresse complète *', val: adresse, set: setAdresse, placeholder: 'Ex : Riviera 2, Rue G5' },
+              { label: 'NUI / RCCM (facultatif)', val: nui, set: setNui, placeholder: 'Ex : NUI-2026-XXXXX' },
+              { label: 'Téléphone *', val: tel, set: setTel, placeholder: '+225 07 XX XX XX XX' },
+            ].map(({ label, val, set, placeholder }) => (
+              <div key={label}>
+                <label className="text-sm font-medium text-ink-600 mb-1.5 block">{label}</label>
+                <input value={val} onChange={e => set(e.target.value)} placeholder={placeholder} className="app-input text-[14px]" />
+              </div>
+            ))}
+
+            <div>
+              <label className="text-sm font-medium text-ink-600 mb-1.5 block">
+                Quartier / commune
+                {quartierAuto && <span className="ml-3 text-sm font-medium !text-forest-700 bg-forest-50 px-2 py-0.5 rounded border border-forest-100">Localisé</span>}
+              </label>
+              <select
+                value={quartier}
+                onChange={e => { setQuartier(e.target.value); setQuartierAuto(false) }}
+                className={`app-input text-[14px] ${quartierAuto ? 'border-forest-400' : ''}`}
+              >
+                {QUARTIERS.map(q => <option key={q} value={q}>{q}</option>)}
+              </select>
             </div>
-          ))}
 
-          <div style={{ marginBottom: 20 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 5 }}>
-              Quartier / commune
-              {quartierAuto && (
-                <span style={{ marginLeft: 8, fontSize: 11, fontWeight: 500, color: 'var(--forest-700)', background: 'var(--forest-50)', border: '1px solid var(--forest-200)', borderRadius: 4, padding: '1px 6px' }}>
-                  détecté via GPS
-                </span>
+            {/* Géolocalisation */}
+            <div>
+              <label className="text-sm font-medium text-ink-600 mb-2 block">Position GPS pour l&apos;agent de constat</label>
+              
+              {gpsMode === null ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Button onClick={detectGps} disabled={gpsLoading} className="!w-full !py-2.5">
+                    {gpsLoading ? <><div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Détection…</> : <><MapPin size={16} /> Ma position actuelle</>}
+                  </Button>
+                  <Button variant="ghost" onClick={() => setGpsMode('manual')} className="!w-full !py-2.5 !text-ink-600">
+                    Saisir manuellement
+                  </Button>
+                </div>
+              ) : gpsMode === 'auto' && gpsLat ? (
+                <div className="bg-forest-50 border border-forest-200 rounded-2xl p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-forest-100 flex items-center justify-center text-forest-600"><MapPin size={14} /></div>
+                    <div>
+                      <div className="font-mono text-[13px] font-bold text-forest-900 leading-none">{gpsLat}, {gpsLng}</div>
+                      <div className="text-sm font-medium !text-forest-600 mt-1 uppercase font-bold tracking-wider">Position enregistrée</div>
+                    </div>
+                  </div>
+                  <button onClick={() => { setGpsMode(null); setGpsLat(''); setGpsLng('') }} className="text-sm font-medium !text-ink-400 hover:!text-ink-900 font-bold uppercase underline border-none bg-transparent cursor-pointer">Changer</button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {gpsError && <div className="text-[12px] text-terra-700 flex gap-2"><AlertCircle size={14} className="shrink-0" /> {gpsError}</div>}
+                  <div className="grid grid-cols-2 gap-3">
+                    <input value={gpsLat} onChange={e => setGpsLat(e.target.value)} placeholder="Latitude" className="app-input font-mono !text-[13px]" />
+                    <input value={gpsLng} onChange={e => setGpsLng(e.target.value)} placeholder="Longitude" className="app-input font-mono !text-[13px]" />
+                  </div>
+                  <Button variant="ghost" onClick={detectGps} className="!w-full !text-[12px] !py-1.5 !text-lagune-600">Retenter la localisation automatique</Button>
+                </div>
               )}
-            </label>
-            <select
-              value={quartier}
-              onChange={e => { setQuartier(e.target.value); setQuartierAuto(false) }}
-              style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: `1px solid ${quartierAuto ? 'var(--forest-400)' : 'var(--border)'}`, background: 'var(--paper-0)', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-1)' }}
-            >
-              {QUARTIERS.map(q => <option key={q}>{q}</option>)}
-            </select>
+            </div>
           </div>
 
-          {/* GPS */}
-          <div style={{ marginBottom: 20 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--fg-2)', marginBottom: 8 }}>
-              Coordonnées GPS de l&apos;établissement
-              <span style={{ fontWeight: 400, color: 'var(--fg-3)', marginLeft: 6 }}>— permet à l&apos;agent de vous localiser</span>
-            </label>
-
-            {/* Mode selector */}
-            {gpsMode === null && (
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button
-                  onClick={detectGps}
-                  disabled={gpsLoading}
-                  style={{ flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '11px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: gpsLoading ? 'wait' : 'pointer', fontFamily: 'var(--font-ui)', background: 'var(--lagune-600)', color: '#fff', border: 'none', opacity: gpsLoading ? .7 : 1 }}
-                >
-                  <MapPin size={15} />
-                  {gpsLoading ? 'Localisation…' : 'Utiliser ma position actuelle'}
-                </button>
-                <button
-                  onClick={() => setGpsMode('manual')}
-                  style={{ flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '11px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-ui)', background: 'transparent', color: 'var(--fg-2)', border: '1px solid var(--border)' }}
-                >
-                  Saisir manuellement
-                </button>
-              </div>
-            )}
-
-            {/* Auto mode — success */}
-            {gpsMode === 'auto' && gpsLat && (
-              <div style={{ background: 'var(--forest-50, #F0FAF4)', border: '1px solid var(--forest-300)', borderRadius: 8, padding: '10px 14px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <MapPin size={14} style={{ color: 'var(--forest-600)', flexShrink: 0 }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--forest-900)' }}>
-                      {gpsLat}, {gpsLng}
-                    </span>
-                  </div>
-                  <button onClick={() => { setGpsMode(null); setGpsLat(''); setGpsLng('') }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 11, color: 'var(--forest-700)', fontFamily: 'var(--font-ui)', fontWeight: 600 }}>
-                    Modifier
-                  </button>
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--forest-700)', marginTop: 4 }}>Position détectée automatiquement</div>
-              </div>
-            )}
-
-            {/* Manual mode */}
-            {gpsMode === 'manual' && (
-              <div>
-                {gpsError && (
-                  <div style={{ fontSize: 12, color: 'var(--terra-700)', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <AlertCircle size={13} style={{ flexShrink: 0 }} /> {gpsError}
-                  </div>
-                )}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: 11, color: 'var(--fg-3)', marginBottom: 4 }}>Latitude</label>
-                    <input value={gpsLat} onChange={e => setGpsLat(e.target.value)} placeholder="Ex : 5.359952" style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--fg-1)' }} />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: 11, color: 'var(--fg-3)', marginBottom: 4 }}>Longitude</label>
-                    <input value={gpsLng} onChange={e => setGpsLng(e.target.value)} placeholder="Ex : -3.990876" style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--paper-0)', fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--fg-1)' }} />
-                  </div>
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--fg-3)', marginTop: 6 }}>
-                  Vous pouvez copier les coordonnées depuis Google Maps en faisant un clic long sur votre emplacement.
-                </div>
-                {!gpsError && (
-                  <button onClick={detectGps} disabled={gpsLoading} style={{ marginTop: 8, fontSize: 12, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--lagune-600)', fontFamily: 'var(--font-ui)', fontWeight: 600, padding: 0 }}>
-                    ↻ Réessayer la localisation automatique
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div style={{ height: 1, background: 'var(--border)', marginBottom: 20 }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button onClick={() => setStep(1)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+          <div className="mt-10 pt-6 border-t border-ink-100 flex justify-between">
+            <Button variant="ghost" onClick={() => setStep(1)}>
               <ChevronLeft size={14} /> Retour
-            </button>
-            <button onClick={() => setStep(3)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+            </Button>
+            <Button onClick={() => setStep(3)}>
               Pièces à joindre <ArrowRight size={14} />
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
       {/* ── Step 3: Documents ── */}
       {step === 3 && (
-        <div style={{ background: 'var(--paper-0)', borderRadius: 16, border: '1px solid var(--border-subtle)', padding: isMobile ? 16 : 24 }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Pièces à joindre</h2>
-          <p style={{ fontSize: 13, color: 'var(--fg-3)', marginBottom: 20 }}>Joignez vos documents pour accélérer le traitement de votre dossier</p>
+        <div className="bg-white rounded-2xl border border-ink-100  p-5 md:p-6">
+          <div className="mb-6 pb-5 border-b border-ink-100">
+            <h2 className="text-lg font-display font-semibold mb-1">Pièces justificatives</h2>
+            <p className="text-xs text-ink-500">Documents à présenter lors du passage de l&apos;agent</p>
+          </div>
 
-          {/* Pièces communes */}
-          <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--fg-3)', fontWeight: 600, marginBottom: 10 }}>Pièces communes (tous dossiers)</div>
-          {PIECES_COMMUNES.map((p, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', marginBottom: 8, background: 'var(--paper-50)' }}>
-              <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--lagune-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <FileText size={16} style={{ color: 'var(--lagune-600)' }} />
-              </div>
-              <div style={{ flex: 1, fontSize: 13, color: 'var(--fg-1)' }}>{p}</div>
-              <button style={{ padding: '5px 12px', borderRadius: 6, fontSize: 12, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
-                + Joindre
-              </button>
-            </div>
-          ))}
-
-          {/* Pièces spécifiques à l'activité */}
-          {activiteChoisie && activiteChoisie.pieceRequises.length > 0 && (
-            <>
-              <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--fg-3)', fontWeight: 600, margin: '20px 0 10px' }}>Spécifique — {activiteChoisie.label}</div>
-              {activiteChoisie.pieceRequises.map((p, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', marginBottom: 8, background: 'var(--paper-50)' }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--ocre-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <FileText size={16} style={{ color: 'var(--ocre-600)' }} />
+          <div className="space-y-6">
+            <div>
+              <div className="text-sm font-medium text-ink-400 mb-3 font-bold uppercase tracking-wider">Documents obligatoires</div>
+              <div className="space-y-2.5">
+                {PIECES_COMMUNES.map((p, i) => (
+                  <div key={i} className="flex items-center gap-3 p-3 bg-paper-50 border border-ink-100 rounded-2xl group hover:border-lagune-300 transition-colors">
+                    <div className="w-9 h-9 rounded-2xl bg-lagune-100 text-lagune-600 flex items-center justify-center shrink-0">
+                      <FileText size={18} />
+                    </div>
+                    <div className="flex-1 text-[13px] text-ink-900 font-medium">{p}</div>
+                    <Button variant="ghost" className="!px-3 !py-1.5 !text-[12px] !bg-white !text-lagune-700  border-ink-100">+ Joindre</Button>
                   </div>
-                  <div style={{ flex: 1, fontSize: 13, color: 'var(--fg-1)' }}>{p}</div>
-                  <button style={{ padding: '5px 12px', borderRadius: 6, fontSize: 12, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
-                    + Joindre
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
+                ))}
+              </div>
+            </div>
 
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '12px 14px', background: 'var(--ocre-50, #FFFBF0)', border: '1px solid var(--ocre-200)', borderRadius: 10, marginTop: 16, marginBottom: 20 }}>
-            <AlertCircle size={16} style={{ color: 'var(--ocre-600)', flexShrink: 0, marginTop: 1 }} />
-            <div style={{ fontSize: 12, color: 'var(--ocre-900)', lineHeight: 1.5 }}>
-              Vous pouvez soumettre votre dossier sans les pièces. L&apos;agent vous demandera les originaux lors de sa visite de constat. Les documents numériques accélèrent le traitement.
+            {activiteChoisie && activiteChoisie.pieceRequises.length > 0 && (
+              <div>
+                <div className="text-sm font-medium text-ink-400 mb-3 font-bold uppercase tracking-wider">Spécifique — {activiteChoisie.label}</div>
+                <div className="space-y-2.5">
+                  {activiteChoisie.pieceRequises.map((p, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 bg-paper-50 border border-ink-100 rounded-2xl group hover:border-ocre-300 transition-colors">
+                      <div className="w-9 h-9 rounded-2xl bg-ocre-100 text-ocre-600 flex items-center justify-center shrink-0">
+                        <FileText size={18} />
+                      </div>
+                      <div className="flex-1 text-[13px] text-ink-900 font-medium">{p}</div>
+                      <Button variant="ghost" className="!px-3 !py-1.5 !text-[12px] !bg-white !text-ocre-700  border-ink-100">+ Joindre</Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-8 p-4 bg-ocre-50 border border-ocre-100 rounded-2xl flex items-start gap-3">
+            <AlertCircle size={16} className="text-ocre-600 shrink-0 mt-0.5" />
+            <div className="text-[12px] text-ocre-900 leading-relaxed">
+              <b>Dépôt optionnel :</b> Vous pouvez valider sans joindre les fichiers maintenant. L&apos;agent de constat vérifiera les originaux physiques sur place.
             </div>
           </div>
 
-          <div style={{ height: 1, background: 'var(--border)', marginBottom: 20 }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button onClick={() => setStep(2)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
+          <div className="mt-10 pt-6 border-t border-ink-100 flex justify-between">
+            <Button variant="ghost" onClick={() => setStep(2)}>
               <ChevronLeft size={14} /> Retour
-            </button>
-            <button onClick={submit} disabled={loading} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 20px', borderRadius: 8, fontSize: 13, fontWeight: 700, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: loading ? 'wait' : 'pointer', fontFamily: 'var(--font-ui)', opacity: loading ? .7 : 1 }}>
-              {loading ? 'Envoi en cours…' : <><MapPin size={14} /> Soumettre ma déclaration</>}
-            </button>
+            </Button>
+            <Button onClick={submit} disabled={loading} className="!px-8">
+              {loading ? <><div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Envoi…</> : <><MapPin size={14} /> Soumettre ma déclaration</>}
+            </Button>
           </div>
         </div>
       )}
@@ -1792,106 +1624,98 @@ function ScreenMesActivites({ go }: { go: (s: Screen) => void }) {
   const totalMensuel = ACTIVITES_CONTRIBUABLE.filter(a => a.statut === 'actif').reduce((s, a) => s + a.taxeMensuelle, 0)
 
   const typeLabel: Record<string, string> = {
-    commerce: 'Commerce / négoce — 2 % du CA',
-    services: 'Prestations de services / artisanat — 2,5 % du CA',
+    commerce: 'Commerce — 2 % du CA',
+    services: 'Services / artisanat — 2,5 % du CA',
     ambulant: 'Vendeur ambulant — 100 F/jour',
-    loue: 'Locaux loués en garnis — 1 %–5 % valeur locative',
-    nuit_ent: 'Établissement de nuit (entreprenant) — 3 000 F/mois',
-    nuit_pat: 'Établissement de nuit (patente) — 52 500 F/mois',
+    loue: 'Locaux loués — 1 %–5 % valeur locative',
+    nuit_ent: 'Bar/Buvette — 3 000 F/mois',
+    nuit_pat: 'Bar/Club (boissons) — 52 500 F/mois',
     taxi: 'Taxi communal — 20 000 F/trimestre',
-    spectacle: 'Spectacle / gala — 10 % des recettes',
-    sport: 'Manifestation sportive — 5 % des recettes',
+    spectacle: 'Spectacle — 10 % recettes',
+    sport: 'Manifestation sportive — 5 % recettes',
     charrette: 'Charrette — 1 000 F/mois',
-    pub_papier: 'Publicité papier — 200 F/m²/mois',
+    pub_papier: 'Affiche papier — 200 F/m²/mois',
     pub_enseigne: 'Enseigne peinte — 1 000 F/m²/mois',
   }
 
   return (
-    <div style={{ maxWidth: 700, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
+    <div className="max-w-[700px] mx-auto px-4 py-8">
+      <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">
         <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: '-.4px', marginBottom: 4 }}>Mes activités</h1>
-          <p style={{ fontSize: 14, color: 'var(--fg-3)' }}>{ACTIVITES_CONTRIBUABLE.length} activité(s) enregistrée(s) · NUI-2026-12401</p>
+          <h1 className="text-xl font-display font-semibold mb-1">Mes activités</h1>
+          <p className="text-xs text-ink-500">{ACTIVITES_CONTRIBUABLE.length} établissement(s) répertorié(s)</p>
         </div>
-        <button onClick={() => go('nouvelle_activite')} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)', flexShrink: 0 }}>
+        <Button onClick={() => go('nouvelle_activite')} className="!text-[13px] !px-4">
           + Nouvelle activité
-        </button>
+        </Button>
       </div>
 
       {/* Résumé fiscal */}
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: 12, marginBottom: 24 }}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
         {[
-          { label: 'Total mensuel dû', value: formatAmount(totalMensuel), unit: 'FCFA', color: 'var(--lagune-600)' },
-          { label: 'Activités actives', value: String(ACTIVITES_CONTRIBUABLE.filter(a => a.statut === 'actif').length), unit: 'sur ' + ACTIVITES_CONTRIBUABLE.length, color: 'var(--forest-600)' },
-          { label: 'Statut global', value: 'À jour', unit: 'Avril 2026', color: 'var(--forest-600)' },
+          { label: 'Total mensuel', value: formatAmount(totalMensuel), unit: 'F', color: 'text-lagune-600' },
+          { label: 'Enregistrées', value: String(ACTIVITES_CONTRIBUABLE.length), unit: 'act.', color: 'text-ink-900' },
+          { label: 'Statut global', value: 'À jour', unit: 'Avril', color: 'text-forest-600' },
         ].map(c => (
-          <div key={c.label} style={{ background: 'var(--paper-0)', borderRadius: 12, border: '1px solid var(--border-subtle)', padding: '14px 18px' }}>
-            <div style={{ fontSize: 11, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, marginBottom: 6 }}>{c.label}</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: c.color }}>{c.value}<span style={{ fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--fg-3)', marginLeft: 5, fontWeight: 500 }}>{c.unit}</span></div>
+          <div key={c.label} className="bg-white rounded-2xl border border-ink-100  p-4">
+            <div className="text-sm font-medium text-ink-500 font-bold uppercase tracking-wider mb-2">{c.label}</div>
+            <div className={`t-h2 !text-lg ${c.color}`}>{c.value}<span className="text-xs text-ink-500 text-ink-400 ml-1 font-medium">{c.unit}</span></div>
           </div>
         ))}
       </div>
 
       {/* Liste des activités */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div className="space-y-3">
         {ACTIVITES_CONTRIBUABLE.map(act => (
-          <div key={act.id} style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', overflow: 'hidden' }}>
-            {/* En-tête cliquable */}
+          <div key={act.id} className="bg-white rounded-2xl border border-ink-100  !p-0 overflow-hidden  hover: transition-shadow">
             <div
-              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 20px', cursor: 'pointer' }}
+              className="flex items-center gap-4 p-5 cursor-pointer bg-paper-0"
               onClick={() => setExpanded(expanded === act.id ? null : act.id)}
             >
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                  <span style={{ fontWeight: 700, fontSize: 15, color: 'var(--fg-1)' }}>{act.nom}</span>
-                  <span style={{
-                    fontSize: 10, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase',
-                    padding: '2px 7px', borderRadius: 999, flexShrink: 0,
-                    background: act.statut === 'actif' ? 'var(--forest-100)' : 'var(--ocre-100)',
-                    color: act.statut === 'actif' ? 'var(--forest-900)' : 'var(--ocre-900)',
-                  }}>{act.statut === 'actif' ? 'Actif' : 'En attente'}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 mb-1.5">
+                  <span className="font-bold text-[15px] text-ink-900 leading-none">{act.nom}</span>
+                  <Pill variant={act.statut === 'actif' ? 'success' : 'warning'} size="sm">
+                    {act.statut === 'actif' ? 'Actif' : 'En attente'}
+                  </Pill>
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--fg-3)' }}>{act.regime} · Compte <span style={{ fontFamily: 'var(--font-mono)' }}>{act.compte}</span></div>
+                <div className="text-[12px] text-ink-500 font-medium">{act.regime} · Compte <span className="font-mono">{act.compte}</span></div>
               </div>
-              <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 700, color: 'var(--lagune-700)' }}>{formatAmount(act.taxeMensuelle)}</div>
-                <div style={{ fontSize: 11, color: 'var(--fg-3)' }}>FCFA / mois</div>
+              <div className="text-right shrink-0 ml-4">
+                <div className="t-amount text-[17px] font-bold text-lagune-700">{formatAmount(act.taxeMensuelle)} F</div>
+                <div className="text-[10px] text-ink-400 font-bold uppercase tracking-wider">par mois</div>
               </div>
-              <ChevronDown size={16} style={{ color: 'var(--fg-3)', transform: expanded === act.id ? 'rotate(180deg)' : 'none', transition: 'transform .2s', flexShrink: 0 }} />
+              <ChevronDown size={18} className={`text-ink-300 transition-transform ${expanded === act.id ? 'rotate-180' : ''}`} />
             </div>
 
-            {/* Détails dépliés */}
             {expanded === act.id && (
-              <div style={{ borderTop: '1px solid var(--border)', padding: '16px 20px', background: 'var(--bg-sunken)' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 0 }}>
+              <div className="bg-paper-50 border-t border-ink-100 p-5 md:p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                   {[
                     ['Identifiant', act.id],
                     ['NUI / RCCM', act.nui],
                     ['Régime fiscal', act.regime],
                     ['Compte budgétaire', act.compte],
                     ['Assiette', typeLabel[act.type] ?? act.type],
-                    ...(act.ca ? [['CA annuel déclaré', `${formatAmount(act.ca)} FCFA`]] : []),
+                    ...(act.ca ? [['CA annuel', `${formatAmount(act.ca)} FCFA`]] : []),
                     ['Taxe mensuelle', `${formatAmount(act.taxeMensuelle)} FCFA`],
-                    ['Adresse', act.adresse],
                     ['Quartier', act.quartier],
-                    ['Enregistrement', act.dateEnreg],
+                    ['Adresse', act.adresse],
+                    ['Date enregistrement', act.dateEnreg],
                   ].map(([k, v]) => (
-                    <div key={k} style={{ display: 'flex', flexDirection: 'column', padding: '7px 0', borderBottom: '1px solid var(--border-subtle)' }}>
-                      <span style={{ fontSize: 11, color: 'var(--fg-3)', marginBottom: 2 }}>{k}</span>
-                      <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--fg-1)', fontFamily: ['NUI / RCCM', 'Compte budgétaire', 'Identifiant'].includes(k) ? 'var(--font-mono)' : 'var(--font-ui)' }}>{v}</span>
+                    <div key={k} className="flex justify-between py-2 border-b border-ink-100 last:border-0">
+                      <span className="text-[12px] text-ink-500 font-medium uppercase tracking-wider">{k}</span>
+                      <span className={`text-[13px] font-bold text-ink-900 text-right ${['Identifiant', 'NUI / RCCM', 'Compte budgétaire'].includes(k) ? 'font-mono' : ''}`}>{v}</span>
                     </div>
                   ))}
                 </div>
-                <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
-                  <button
-                    onClick={() => go('declaration')}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, background: 'var(--secondary)', color: 'var(--secondary-on)', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}
-                  >
-                    Payer la taxe du mois
-                  </button>
-                  <button style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
-                    <Download size={12} /> Attestation
-                  </button>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Button onClick={() => go('declaration')} className="!text-[12px] !px-4">
+                    Payer ma taxe
+                  </Button>
+                  <Button variant="ghost" className="!text-[12px] !px-4 border-ink-200">
+                    <Download size={14} /> Attestation fiscale
+                  </Button>
                 </div>
               </div>
             )}
@@ -1912,209 +1736,230 @@ function ScreenBareme({ go }: { go: (s: Screen) => void }) {
     setOpenChapitres(prev => { const s = new Set(prev); s.has(key) ? s.delete(key) : s.add(key); return s })
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: isMobile ? '20px 16px' : '32px 24px' }}>
+    <div className="max-w-[900px] mx-auto px-4 py-8">
       {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 999, background: 'var(--lagune-100)', color: 'var(--lagune-700)', fontSize: 12, fontWeight: 700, letterSpacing: '.04em', textTransform: 'uppercase', marginBottom: 12 }}>
-          Document officiel
+      <div className="mb-8">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-lagune-100 text-lagune-700 text-[11px] font-bold uppercase tracking-wider mb-4">
+          <BookOpen size={12} /> Document officiel 2026
         </div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: isMobile ? 22 : 30, fontWeight: 700, letterSpacing: '-.5px', marginBottom: 8 }}>
-          Barème fiscal municipal 2026
+        <h1 className="text-xl font-display font-semibold mb-2 leading-tight">
+          Barème fiscal municipal
         </h1>
-        <p style={{ fontSize: 14, color: 'var(--fg-3)', lineHeight: 1.6, maxWidth: 620 }}>
-          Délibération N°2025-172/CC/CM/SG du Conseil Municipal de Cocody · Exercice budgétaire 2026 · Conforme au SYSCOHADA révisé et au Code Général des Impôts de Côte d&apos;Ivoire.
+        <p className="text-sm text-ink-500 max-w-[640px]">
+          Délibération N°2025-172/CC/CM/SG du Conseil Municipal de Cocody. Tarifs applicables aux activités économiques sur le territoire communal.
         </p>
       </div>
 
       {/* Mairie header block */}
-      <div style={{
-        background: 'linear-gradient(135deg, var(--lagune-900) 0%, var(--lagune-700) 100%)',
-        borderRadius: 16, padding: isMobile ? '20px 16px' : '28px 32px', marginBottom: 32,
-        display: 'flex', alignItems: 'center', gap: isMobile ? 14 : 24, position: 'relative', overflow: 'hidden',
-        flexWrap: 'wrap',
-      }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/assets/pattern-kita.svg')", backgroundSize: 200, opacity: .05, filter: 'brightness(0) invert(1)', pointerEvents: 'none' }} />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/logo-cocody.png" alt="Cocody" style={{ width: 64, height: 64, borderRadius: 12, background: 'rgba(255,255,255,.9)', padding: 4, flexShrink: 0 }} />
-        <div style={{ position: 'relative' }}>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 4 }}>MAIRIE DE COCODY</div>
-          <div style={{ fontSize: 13, color: 'rgba(255,255,255,.75)', marginBottom: 6 }}>République de Côte d&apos;Ivoire · District d&apos;Abidjan</div>
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            {[
-              'Délibération N°2025-172/CC/CM/SG',
-              'Exercice 2026',
-              'Conforme SYSCOHADA révisé',
-              'CGI — Art. 103 à 180',
-            ].map(t => (
-              <span key={t} style={{ fontSize: 11, color: 'rgba(255,255,255,.6)', fontFamily: 'var(--font-mono)', letterSpacing: '.04em' }}>{t}</span>
-            ))}
+      <div className="bg-lagune-900 rounded-[24px] p-6 md:p-8 mb-10 relative overflow-hidden  group">
+        <div className="absolute inset-0 bg-[url('/assets/pattern-kita.svg')] bg-[size:240px] opacity-10 pointer-events-none transition-transform duration-1000 group-hover:scale-110" />
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div className="w-[72px] h-[72px] rounded-2xl bg-white/95 p-1 flex items-center justify-center shrink-0 ">
+            <img src="/assets/logo-cocody.png" alt="Cocody" className="w-full h-full object-contain" />
+          </div>
+          <div className="flex-1">
+            <div className="font-display text-[22px] font-bold text-white mb-1 tracking-tight">Commune de Cocody</div>
+            <div className="text-[13px] text-white/70 mb-4 font-medium">République de Côte d&apos;Ivoire · District d&apos;Abidjan</div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              {[
+                'Délibération 2025-172',
+                'Exercice 2026',
+                'Conforme SYSCOHADA',
+                'CGI Art. 103–180',
+              ].map(t => (
+                <span key={t} className="text-[10px] font-bold font-mono text-white/50 uppercase tracking-widest bg-white/10 px-2 py-0.5 rounded">
+                  {t}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Legal intro */}
-      <div style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', padding: '20px 24px', marginBottom: 24, fontSize: 13, color: 'var(--fg-2)', lineHeight: 1.7 }}>
-        <p style={{ marginBottom: 10 }}>
-          <b>Article 1.</b> Le présent barème fixe les taux et montants des taxes communales perçues par la Mairie de Cocody pour l&apos;exercice budgétaire 2026, en application des articles 103 à 180 du Code Général des Impôts de Côte d&apos;Ivoire et des directives UEMOA relatives aux finances locales.
-        </p>
-        <p style={{ marginBottom: 10 }}>
-          <b>Article 2.</b> Toute personne physique ou morale exerçant une activité économique sur le territoire de la Commune de Cocody est assujettie aux taxes définies ci-après, selon la nature de son activité et son régime fiscal.
+      <div className="bg-white rounded-2xl border border-ink-100  p-6 mb-10 leading-relaxed text-[13px] text-ink-700 space-y-4 !bg-paper-0  border-ink-100">
+        <p>
+          <b className="text-ink-900">Article 1.</b> Le présent barème fixe les taux et montants des taxes communales perçues par la Mairie de Cocody pour l&apos;exercice budgétaire 2026, en application du Code Général des Impôts et des directives UEMOA.
         </p>
         <p>
-          <b>Article 3.</b> Les recettes fiscales sont imputées sur les comptes de classe 7 du plan SYSCOHADA révisé. Les contribuables reçoivent un reçu numérique horodaté, vérifiable sur le portail CoTax (cocody.ci/v/[numéro]).
+          <b className="text-ink-900">Article 2.</b> Toute personne physique ou morale exerçant une activité économique sur le territoire de la Commune est assujettie aux taxes définies ci-après, selon son régime fiscal.
         </p>
+        <div className="pt-2 flex items-center gap-2 text-lagune-600 font-bold">
+          <CheckCircle size={14} /> Reçu numérique immédiat et vérifiable pour tout paiement
+        </div>
       </div>
 
       {/* Tax categories */}
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ fontSize: 18, fontFamily: 'var(--font-display)', fontWeight: 600, marginBottom: 16 }}>
-          Barème complet — {BAREME_COMPLET.reduce((n, s) => n + s.chapitres.reduce((m, ch) => m + ch.sections.length, 0), 0)} rubriques
+      <div className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-display font-semibold text-ink-900 !text-[20px]">
+            Détail du barème
+          </h2>
+          <span className="text-sm font-medium bg-ink-100 text-ink-600 px-2.5 py-1 rounded-pill font-bold">
+            {BAREME_COMPLET.reduce((n, s) => n + s.chapitres.reduce((m, ch) => m + ch.sections.length, 0), 0)} RUBRIQUES
+          </span>
         </div>
 
         {BAREME_COMPLET.map(section => (
-          <div key={section.id} style={{ marginBottom: 24 }}>
-            <div style={{
-              fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase',
-              color: 'var(--lagune-600)', fontWeight: 700, marginBottom: 10, paddingLeft: 4,
-            }}>
+          <div key={section.id} className="mb-8">
+            <div className="text-xs font-semibold uppercase tracking-widest text-lagune-600 font-bold uppercase tracking-widest mb-3 ml-1">
               {section.label}
             </div>
 
-            {section.chapitres.map(chapitre => (
-              <div key={chapitre.chapitre} style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', marginBottom: 10, overflow: 'hidden' }}>
-                <button
-                  onClick={() => toggleChapitre(`${section.id}-${chapitre.chapitre}`)}
-                  style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-ui)' }}
-                >
-                  <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--lagune-100)', color: 'var(--lagune-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700 }}>
-                    {chapitre.chapitre}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--fg-1)', marginBottom: 2 }}>{chapitre.titre}</div>
-                    <div style={{ fontSize: 11, color: 'var(--fg-3)', fontFamily: 'var(--font-mono)' }}>
-                      {chapitre.sections.length} rubrique{chapitre.sections.length > 1 ? 's' : ''} · {chapitre.sections.reduce((n, s) => n + s.lignes.length, 0)} lignes tarifaires
-                    </div>
-                  </div>
-                  <ChevronDown size={16} style={{ color: 'var(--fg-3)', transform: openChapitres.has(`${section.id}-${chapitre.chapitre}`) ? 'rotate(180deg)' : 'none', transition: 'transform .2s', flexShrink: 0 }} />
-                </button>
-
-                {openChapitres.has(`${section.id}-${chapitre.chapitre}`) && (
-                  <div style={{ borderTop: '1px solid var(--border)', padding: '16px 20px' }}>
-                    {chapitre.sections.map((sec, si) => (
-                      <div key={`${sec.compte}-${si}`} style={{ marginBottom: si < chapitre.sections.length - 1 ? 24 : 0 }}>
-                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: sec.description ? 6 : 10 }}>
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700, color: 'var(--lagune-700)', background: 'var(--lagune-50)', padding: '2px 8px', borderRadius: 6 }}>{sec.compte}</span>
-                          <span style={{ fontWeight: 700, fontSize: 14, color: 'var(--fg-1)' }}>{sec.label}</span>
-                        </div>
-                        {sec.description && (
-                          <p style={{ fontSize: 12, color: 'var(--fg-3)', marginBottom: 10, lineHeight: 1.6 }}>{sec.description}</p>
-                        )}
-                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                          <thead>
-                            <tr>
-                              {['Désignation', 'Unité', 'Montant'].map((h, i) => (
-                                <th key={i} style={{ textAlign: i === 2 ? 'right' : 'left', padding: '7px 10px', fontSize: 10, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, background: 'var(--bg-sunken)', borderBottom: '1px solid var(--border)' }}>{h}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {sec.lignes.map((l, li) => (
-                              <tr key={li} style={{ background: li % 2 === 0 ? 'transparent' : 'var(--paper-50)' }}>
-                                <td style={{ padding: '8px 10px', fontSize: 12, color: 'var(--fg-1)', borderBottom: '1px solid var(--border-subtle)' }}>{l.label}</td>
-                                <td style={{ padding: '8px 10px', fontSize: 11, color: 'var(--fg-3)', borderBottom: '1px solid var(--border-subtle)', maxWidth: 260 }}>{l.unite}</td>
-                                <td style={{ padding: '8px 10px', textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 13, color: 'var(--lagune-700)', borderBottom: '1px solid var(--border-subtle)', whiteSpace: 'nowrap' }}>
-                                  {typeof l.montant === 'number' ? `${formatAmount(l.montant)} F` : l.montant}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+            <div className="space-y-3">
+              {section.chapitres.map(chapitre => {
+                const isOpen = openChapitres.has(`${section.id}-${chapitre.chapitre}`)
+                return (
+                  <div key={chapitre.chapitre} className="bg-white rounded-2xl border border-ink-100  !p-0 overflow-hidden  hover: transition-all border-ink-100 bg-paper-0">
+                    <button
+                      onClick={() => toggleChapitre(`${section.id}-${chapitre.chapitre}`)}
+                      className="w-full flex items-center gap-4 p-4 md:p-5 text-left hover:bg-paper-50 transition-colors"
+                    >
+                      <div className="w-11 h-11 rounded-2xl bg-lagune-50 text-lagune-700 flex items-center justify-center shrink-0 font-mono text-[11px] font-bold border border-lagune-100">
+                        {chapitre.chapitre}
                       </div>
-                    ))}
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-[15px] text-ink-900 leading-snug mb-1">{chapitre.titre}</div>
+                        <div className="text-[11px] text-ink-400 font-medium uppercase tracking-wider">
+                          {chapitre.sections.length} rubriques · {chapitre.sections.reduce((n, s) => n + s.lignes.length, 0)} tarifs
+                        </div>
+                      </div>
+                      <ChevronDown size={18} className={`text-ink-300 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {isOpen && (
+                      <div className="border-t border-ink-100 p-4 md:p-6 bg-paper-50/30">
+                        {chapitre.sections.map((sec, si) => (
+                          <div key={`${sec.compte}-${si}`} className="mb-8 last:mb-0">
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="font-mono text-[11px] font-bold bg-lagune-100 text-lagune-700 px-2 py-0.5 rounded">{sec.compte}</span>
+                              <span className="font-bold text-[14px] text-ink-950 leading-tight">{sec.label}</span>
+                            </div>
+                            {sec.description && (
+                              <p className="text-[12px] text-ink-500 mb-4 leading-relaxed">{sec.description}</p>
+                            )}
+                            <div className="bg-white rounded-2xl border border-ink-100 overflow-hidden ">
+                              <table className="w-full border-collapse">
+                                <thead>
+                                  <tr className="bg-paper-50/80">
+                                    <th className="px-3.5 py-2.5 text-sm font-medium text-ink-400 font-bold uppercase text-left">Désignation</th>
+                                    <th className="px-3.5 py-2.5 text-sm font-medium text-ink-400 font-bold uppercase text-left">Unité</th>
+                                    <th className="px-3.5 py-2.5 text-sm font-medium text-ink-400 font-bold uppercase text-right">Montant</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-ink-50">
+                                  {sec.lignes.map((l, li) => (
+                                    <tr key={li} className="hover:bg-lagune-50/20">
+                                      <td className="px-3.5 py-3 text-[13px] text-ink-900 font-medium">{l.label}</td>
+                                      <td className="px-3.5 py-3 text-[12px] text-ink-500 italic max-w-[240px]">{l.unite}</td>
+                                      <td className="px-3.5 py-3 text-right font-mono font-bold text-[14px] text-lagune-700 whitespace-nowrap">
+                                        {typeof l.montant === 'number' ? <span className="t-amount">{formatAmount(l.montant)} F</span> : l.montant}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
+                )
+              })}
+            </div>
           </div>
         ))}
       </div>
 
       {/* Activity types table */}
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ fontSize: 18, fontFamily: 'var(--font-display)', fontWeight: 600, marginBottom: 16 }}>Répertoire des activités économiques</div>
-        <p style={{ fontSize: 13, color: 'var(--fg-3)', marginBottom: 16, lineHeight: 1.6 }}>
-          {TYPES_ACTIVITES.length} types d&apos;activités répertoriés · classés par secteur · applicable exercice 2026
+      <div className="mb-12">
+        <h2 className="text-2xl font-display font-semibold text-ink-900 !text-[20px] mb-4">Répertoire des activités</h2>
+        <p className="text-xs text-ink-500 text-ink-500 mb-6">
+          Classification officielle pour la détermination du régime fiscal.
         </p>
-        <div style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', overflow: 'hidden' }}>
-          <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', minWidth: 600, borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                {['Activité', 'Catégorie', 'Régime fiscal', 'Compte', 'Délai constat'].map((h, i) => (
-                  <th key={i} style={{ textAlign: 'left', padding: '9px 14px', fontSize: 11, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, background: 'var(--paper-50)', borderBottom: '1px solid var(--border)' }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {TYPES_ACTIVITES.map((a, i) => (
-                <tr key={a.id} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--paper-50)' }}>
-                  <td style={{ padding: '9px 14px', fontSize: 13, fontWeight: 600, color: 'var(--fg-1)', borderBottom: '1px solid var(--border-subtle)' }}>
-                    <div>{a.label}</div>
-                    <div style={{ fontSize: 11, color: 'var(--fg-3)', fontFamily: 'var(--font-mono)', marginTop: 1 }}>{a.id}</div>
-                  </td>
-                  <td style={{ padding: '9px 14px', fontSize: 12, color: 'var(--fg-2)', borderBottom: '1px solid var(--border-subtle)' }}>{a.categorie}</td>
-                  <td style={{ padding: '9px 14px', fontSize: 12, color: 'var(--fg-2)', borderBottom: '1px solid var(--border-subtle)' }}>{a.regimeFiscal}</td>
-                  <td style={{ padding: '9px 14px', fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--lagune-700)', borderBottom: '1px solid var(--border-subtle)' }}>{a.compte}</td>
-                  <td style={{ padding: '9px 14px', fontSize: 12, color: 'var(--fg-2)', borderBottom: '1px solid var(--border-subtle)' }}>{a.delaiTraitement}</td>
+        <div className="bg-white rounded-2xl border border-ink-100  !p-0 overflow-hidden  border-ink-100">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse min-w-[700px]">
+              <thead>
+                <tr className="bg-paper-50 border-b border-ink-100">
+                  {['Activité', 'Catégorie', 'Régime fiscal', 'Compte', 'Délai constat'].map((h, i) => (
+                    <th key={i} className="px-4 py-3.5 text-sm font-medium text-ink-500 font-bold uppercase text-left">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-ink-50">
+                {TYPES_ACTIVITES.map((a, i) => (
+                  <tr key={a.id} className="hover:bg-paper-50/50 transition-colors">
+                    <td className="px-4 py-4">
+                      <div className="text-[13px] font-bold text-ink-900">{a.label}</div>
+                      <div className="text-[10px] text-ink-400 font-mono mt-0.5">{a.id}</div>
+                    </td>
+                    <td className="px-4 py-4 text-[12px] text-ink-600">{a.categorie}</td>
+                    <td className="px-4 py-4 text-[12px] text-ink-600 font-medium">{a.regimeFiscal}</td>
+                    <td className="px-4 py-4 font-mono text-[13px] font-bold text-lagune-600">{a.compte}</td>
+                    <td className="px-4 py-4">
+                      <Pill variant="warning" size="sm">{a.delaiTraitement}</Pill>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
-      {/* SYSCOHADA accounts summary */}
-      <div style={{ background: 'var(--paper-0)', borderRadius: 14, border: '1px solid var(--border-subtle)', padding: '20px 24px', marginBottom: 24 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 16 }}>Comptes budgétaires SYSCOHADA</div>
-        <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', minWidth: 400, borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              {['Compte', 'Libellé', 'Taxes associées'].map(h => (
-                <th key={h} style={{ textAlign: 'left', padding: '8px 12px', fontSize: 11, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600, background: 'var(--bg-sunken)', borderBottom: '1px solid var(--border)' }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {BAREME_COMPLET.flatMap(s => s.chapitres.flatMap(ch => ch.sections)).map((sec, i) => (
-              <tr key={`${sec.compte}-${i}`} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--paper-50)' }}>
-                <td style={{ padding: '9px 12px', fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 13, color: 'var(--lagune-700)', borderBottom: '1px solid var(--border-subtle)', whiteSpace: 'nowrap' }}>{sec.compte}</td>
-                <td style={{ padding: '9px 12px', fontSize: 13, fontWeight: 600, color: 'var(--fg-1)', borderBottom: '1px solid var(--border-subtle)' }}>{sec.label}</td>
-                <td style={{ padding: '9px 12px', fontSize: 11, color: 'var(--fg-3)', borderBottom: '1px solid var(--border-subtle)' }}>
-                  {sec.description ?? `${sec.lignes.length} ligne${sec.lignes.length > 1 ? 's' : ''} tarifaire${sec.lignes.length > 1 ? 's' : ''}`}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* SYSCOHADA summary */}
+      <div className="bg-white rounded-2xl border border-ink-100  p-6 md:p-8 mb-10 bg-paper-0 border-ink-100 ">
+        <h3 className="font-display font-bold text-[17px] mb-6 text-ink-950">Comptes budgétaires SYSCOHADA</h3>
+        <div className="space-y-2">
+          {BAREME_COMPLET.flatMap(s => s.chapitres.flatMap(ch => ch.sections)).map((sec, i) => (
+            <div key={`${sec.compte}-${i}`} className="flex items-center gap-4 py-3 border-b border-ink-50 last:border-0 hover:bg-lagune-50/20 px-2 rounded-2xl transition-colors">
+              <span className="w-16 font-mono text-[13px] font-bold text-lagune-600">{sec.compte}</span>
+              <span className="flex-1 text-[13px] font-bold text-ink-900">{sec.label}</span>
+              <span className="text-[11px] text-ink-400 uppercase tracking-widest font-bold">
+                {sec.lignes.length} TARIFS
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Footer legal */}
-      <div style={{ fontSize: 12, color: 'var(--fg-3)', lineHeight: 1.7, padding: '20px 24px', background: 'var(--bg-sunken)', borderRadius: 10, marginBottom: 24 }}>
-        <b style={{ color: 'var(--fg-2)' }}>Dispositions finales.</b> Tout contribuable peut contester le montant de sa taxation devant le service des impôts communaux de la Mairie de Cocody, situé au Boulevard de France (II Plateaux), dans un délai de 30 jours suivant la réception du titre de perception. Les pénalités de retard sont fixées à 10 % du montant dû par tranche de 30 jours d&apos;impayés, conformément à l&apos;article 62 du SYSCOHADA révisé.
-        <br /><br />
-        <b style={{ color: 'var(--fg-2)' }}>Textes de référence :</b> Code Général des Impôts CI (art. 103–180) · SYSCOHADA révisé (OHADA 2017) · Délibération N°2025-172/CC/CM/SG · Directives UEMOA/BCEAO finances locales.
+      {/* Footer legal text */}
+      <div className="bg-ink-900 rounded-2xl p-6 md:p-8 text-white/60 text-[12px] leading-relaxed mb-8 ">
+        <div className="flex items-center gap-3 mb-6">
+          <AlertCircle size={20} className="text-lagune-400" />
+          <span className="font-display text-[15px] font-bold text-white uppercase tracking-wider">Dispositions légales</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <p className="mb-4">
+              <b className="text-white/90">Contestations :</b> Tout contribuable peut contester le montant de sa taxation devant le service des impôts de la Mairie dans un délai de 30 jours.
+            </p>
+            <p>
+              <b className="text-white/90">Pénalités :</b> Les retards de paiement entraînent une majoration de 10 % par mois, conformément au SYSCOHADA révisé.
+            </p>
+          </div>
+          <div className="md:border-l md:border-white/10 md:pl-8">
+            <p className="mb-2 uppercase font-bold text-[10px] tracking-widest text-white/40">Textes de référence</p>
+            <ul className="space-y-1 text-white/80">
+              <li>· Code Général des Impôts CI (Art. 103–180)</li>
+              <li>· Plan Comptable SYSCOHADA (2017)</li>
+              <li>· Délibération N°2025-172/CC/CM/SG</li>
+              <li>· Directives UEMOA Finances Locales</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-        <button style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', color: 'var(--fg-2)', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
-          <Download size={14} /> Télécharger PDF
-        </button>
-        <button onClick={() => go('nouvelle_activite')} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, background: 'var(--lagune-600)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
-          <PlusCircle size={14} /> Déclarer mon activité
-        </button>
+      {/* Global Actions */}
+      <div className="flex flex-wrap gap-3 pt-6 border-t border-ink-100">
+        <Button variant="ghost" className="border-ink-200">
+          <Download size={16} /> Télécharger le PDF complet
+        </Button>
+        <Button onClick={() => go('nouvelle_activite')} variant="primary" className="!px-6">
+          <PlusCircle size={16} /> Déclarer mon activité
+        </Button>
       </div>
     </div>
   )
@@ -2126,20 +1971,22 @@ export default function PortailPage() {
   const { isTablet } = useBreakpoint()
 
   return (
-    <>
+    <div className="min-h-screen bg-paper-50 flex flex-col">
       <Topnav screen={screen} go={setScreen} />
-      {/* Padding bottom en JS : 72px quand le bottom nav est visible */}
-      <div style={{ paddingBottom: isTablet ? 72 : 0, overflowX: 'hidden', width: '100%' }}>
-        {screen === 'home'              && <ScreenHome             go={setScreen} />}
-        {screen === 'mes_activites'     && <ScreenMesActivites     go={setScreen} />}
-        {screen === 'declaration'       && <ScreenDeclaration      go={setScreen} />}
-        {screen === 'historique'        && <ScreenHistorique       go={setScreen} />}
-        {screen === 'profil'            && <ScreenProfil           go={setScreen} />}
-        {screen === 'nouvelle_activite' && <ScreenNouvelleActivite go={setScreen} />}
-        {screen === 'bareme'            && <ScreenBareme           go={setScreen} />}
-      </div>
-      {/* BottomNav se rend null lui-même sur desktop — zéro risque d'interception */}
+      
+      <main className={`flex-1 overflow-x-hidden ${isTablet ? 'pb-[88px]' : 'pb-12'}`}>
+        <div className="animate-in fade-in duration-500">
+          {screen === 'home'              && <ScreenHome             go={setScreen} />}
+          {screen === 'mes_activites'     && <ScreenMesActivites     go={setScreen} />}
+          {screen === 'declaration'       && <ScreenDeclaration      go={setScreen} />}
+          {screen === 'historique'        && <ScreenHistorique       go={setScreen} />}
+          {screen === 'profil'            && <ScreenProfil           go={setScreen} />}
+          {screen === 'nouvelle_activite' && <ScreenNouvelleActivite go={setScreen} />}
+          {screen === 'bareme'            && <ScreenBareme           go={setScreen} />}
+        </div>
+      </main>
+
       <BottomNav screen={screen} go={setScreen} />
-    </>
+    </div>
   )
 }

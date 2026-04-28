@@ -4,13 +4,13 @@ import React from 'react'
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
 
 const BASE =
-  'inline-flex items-center gap-[7px] px-[14px] py-[9px] rounded-md text-sm font-semibold cursor-pointer border border-transparent font-[family-name:var(--font-ui)] transition-colors duration-[150ms] no-underline justify-center flex-wrap max-w-full'
+  'inline-flex items-center justify-center gap-2 px-3.5 py-[9px] rounded-[10px] text-sm font-semibold leading-none whitespace-nowrap cursor-pointer border font-[family-name:var(--font-ui)] transition-colors duration-150 no-underline shadow-none disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lagune-500 focus-visible:ring-offset-2'
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary:   'bg-[var(--primary)] text-[var(--primary-on)]',
-  secondary: 'bg-[var(--secondary)] text-white',
-  ghost:     'bg-transparent text-[var(--fg-2)] border-[var(--border)]',
-  danger:    'bg-terra-500 text-white',
+  primary: 'border-transparent bg-lagune-500 text-white hover:bg-lagune-600 active:bg-lagune-700',
+  secondary: 'border-transparent bg-forest-600 text-white hover:bg-forest-700',
+  ghost: 'border-ink-200 bg-transparent text-ink-700 hover:bg-ink-50 hover:text-ink-900',
+  danger: 'border-transparent bg-terra-500 text-white hover:bg-terra-600',
 }
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

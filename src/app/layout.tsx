@@ -1,27 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
+import type { CSSProperties } from 'react'
 import './globals.css'
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-display',
-  display: 'swap',
-})
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-ui',
-  display: 'swap',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-mono',
-  display: 'swap',
-})
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -31,13 +10,29 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'CoTax Cocody',
-  description: 'Plateforme de digitalisation de la collecte fiscale — Commune de Cocody',
+  description: 'Plateforme de digitalisation de la collecte fiscale - Commune de Cocody',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${fraunces.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}>
-      <body style={{ fontFamily: 'var(--font-ui, "Plus Jakarta Sans", system-ui, sans-serif)' }}>
+    <html lang="fr">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body
+        style={
+          {
+            '--font-display': '"Fraunces", Georgia, serif',
+            '--font-ui': '"Plus Jakarta Sans", Inter, system-ui, sans-serif',
+            '--font-mono': '"JetBrains Mono", "SFMono-Regular", Consolas, monospace',
+          } as CSSProperties
+        }
+      >
         {children}
       </body>
     </html>

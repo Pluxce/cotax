@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function PortailLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--paper-50)' }}>
+    <div className="min-h-screen bg-paper-50 text-ink-900">
       {children}
     </div>
   )

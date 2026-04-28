@@ -1,13 +1,17 @@
 import React from 'react'
 
-type PillVariant = 'ok' | 'late' | 'pending' | 'info' | 'tresor'
+type PillVariant = 'ok' | 'late' | 'pending' | 'info' | 'tresor' | 'success' | 'danger' | 'warning' | 'success' | 'danger' | 'warning'
+type PillSize = 'sm' | 'md'
 
 const PILL_CLS: Record<PillVariant, string> = {
   ok:      'bg-forest-100 text-forest-900',
   late:    'bg-terra-100  text-terra-900',
-  pending: 'bg-ocre-100   text-ocre-900',
+  pending: 'bg-ocre-100   text-ocre-800',
   info:    'bg-lagune-100 text-lagune-700',
   tresor:  'bg-tresor-100 text-tresor-700',
+  success: 'bg-forest-100 text-forest-900',
+  danger:  'bg-terra-100  text-terra-900',
+  warning: 'bg-ocre-100   text-ocre-800',
 }
 
 const DOT_CLS: Record<PillVariant, string> = {
@@ -16,20 +20,30 @@ const DOT_CLS: Record<PillVariant, string> = {
   pending: 'bg-ocre-700',
   info:    'bg-lagune-500',
   tresor:  'bg-tresor-500',
+  success: 'bg-forest-600',
+  danger:  'bg-terra-500',
+  warning: 'bg-ocre-700',
+}
+
+const SIZE_CLS: Record<PillSize, string> = {
+  sm: 'text-[11px] px-[9px] py-[3px]',
+  md: 'text-[12px] px-[11px] py-[4px]',
 }
 
 interface PillProps {
-  variant: PillVariant
+  variant?: PillVariant | 'success' | 'danger' | 'warning'
   dot?: boolean
   pulse?: boolean
+  size?: PillSize
   children?: React.ReactNode
   style?: React.CSSProperties
+  className?: string
 }
 
-export function Pill({ variant, dot = false, pulse = false, children, style }: PillProps) {
+export function Pill({ variant = 'ok', dot = false, pulse = false, size = 'sm', children, style, className }: PillProps) {
   return (
     <span
-      className={`inline-flex items-center gap-[5px] px-[9px] py-[3px] rounded-[999px] text-[11px] font-semibold tracking-[0.04em] uppercase whitespace-nowrap ${PILL_CLS[variant]}`}
+      className={`inline-flex items-center gap-[5px] rounded-[999px] font-semibold tracking-[0.04em] uppercase whitespace-nowrap border border-transparent ${PILL_CLS[variant]} ${SIZE_CLS[size]}${className ? ` ${className}` : ''}`}
       style={style}
     >
       {dot && (

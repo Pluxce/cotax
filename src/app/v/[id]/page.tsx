@@ -1,6 +1,5 @@
-import React from 'react'
 import Link from 'next/link'
-import { CheckCircle, ChevronLeft } from 'lucide-react'
+import { CheckCircle2, ChevronLeft, ShieldCheck } from 'lucide-react'
 import { RECEIPT_PUBLIC, formatAmount } from '@/lib/mock-data'
 
 export default async function VerifPage({ params }: { params: Promise<{ id: string }> }) {
@@ -9,88 +8,141 @@ export default async function VerifPage({ params }: { params: Promise<{ id: stri
 
   if (!receipt) {
     return (
-      <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-        <div style={{ maxWidth: 400, textAlign: 'center' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 600, marginBottom: 8 }}>Reçu introuvable</h1>
-          <p style={{ color: 'var(--fg-3)', marginBottom: 24 }}>Le reçu n° {id} n&apos;existe pas ou n&apos;a pas encore été enregistré au Trésor.</p>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--lagune-700)', fontWeight: 600 }}>
-            <ChevronLeft size={16} /> Retour à l&apos;accueil
-          </Link>
+      <main className="min-h-screen bg-paper-50 px-4 py-16">
+        <div className="mx-auto max-w-[460px] text-center">
+          <div className="section-card px-6 py-12 shadow-elev-2">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-terra-100 text-terra-700 shadow-sm">
+              <ShieldCheck size={32} />
+            </div>
+            <h1 className="t-h1 mt-6 font-display">Reçu introuvable</h1>
+            <p className="mt-4 t-body text-ink-500 max-w-[320px] mx-auto">
+              Le reçu n° <b>{id}</b> n&apos;existe pas ou n&apos;est pas encore enregistré au Trésor.
+            </p>
+            <div className="mt-8 pt-8 border-t border-ink-100">
+              <Link
+                href="/portail"
+                className="inline-flex items-center gap-2 text-sm font-bold text-lagune-700 hover:text-lagune-900 transition-colors"
+              >
+                <ChevronLeft size={18} />
+                Retour au portail
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     )
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: '32px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ width: '100%', maxWidth: 440 }}>
-        {/* Back link */}
-        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--fg-3)', fontSize: 13, marginBottom: 24, textDecoration: 'none' }}>
-          <ChevronLeft size={16} /> Vérification publique
+    <main className="min-h-screen bg-paper-50 px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-[520px]">
+        <Link
+          href="/portail"
+          className="mb-6 inline-flex items-center gap-2 text-[13px] font-bold text-ink-500 hover:text-ink-900 transition-colors no-underline"
+        >
+          <ChevronLeft size={16} />
+          VÉRIFICATION PUBLIQUE
         </Link>
 
-        {/* Title */}
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--fg-3)', fontWeight: 600 }}>Vérification publique</div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 600, letterSpacing: '-0.01em', margin: '4px 0 0' }}>Reçu n° {receipt.num}</h1>
-        </div>
-
-        {/* Authentic badge */}
-        <div style={{ background: 'var(--forest-100)', border: '1px solid var(--forest-200)', borderRadius: 14, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-          <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--forest-600)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <CheckCircle size={22} strokeWidth={2.5} />
-          </div>
-          <div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--forest-900)' }}>Reçu authentique</div>
-            <div style={{ fontSize: 11, color: 'var(--forest-900)', opacity: 0.8, marginTop: 2 }}>Émis par la Mairie de Cocody · enregistré au Trésor</div>
-          </div>
-        </div>
-
-        {/* Details */}
-        <div style={{ background: 'var(--paper-0)', border: '1px solid var(--border)', borderRadius: 14, padding: '16px 18px', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--fg-1)', marginBottom: 16 }}>
-          {[
-            ['Date', receipt.date],
-            ['Contribuable', receipt.contribuable],
-            ['Étal', receipt.stall],
-            ['Agent', receipt.agent],
-            ['PSP', receipt.psp],
-          ].map(([k, v]) => (
-            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid var(--border-subtle)' }}>
-              <span style={{ color: 'var(--fg-3)' }}>{k}</span>
-              <span style={{ fontWeight: 500 }}>{v}</span>
+        <section className="hero-surface px-6 py-8 sm:px-8 rounded-t-[32px] shadow-lg">
+          <div className="relative z-10 flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20 text-white shadow-inner">
+              <ShieldCheck size={26} />
             </div>
-          ))}
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0 4px', borderTop: '1px dashed var(--ink-300)', marginTop: 4 }}>
-            <span style={{ color: 'var(--fg-3)' }}>Tampon Trésor</span>
-            <span style={{ color: 'var(--tresor-500)', fontWeight: 600 }}>{receipt.tresorRef}</span>
+            <div className="min-w-0">
+              <p className="t-micro text-white/60 font-bold uppercase tracking-[0.15em] mb-1">
+                Authentification CoTax
+              </p>
+              <h1 className="font-display text-[28px] font-bold text-white leading-tight">
+                Reçu n° {receipt.num}
+              </h1>
+              <p className="mt-2 text-[14px] text-white/80 leading-relaxed">
+                Émis par la <b>Mairie de Cocody</b> et certifié par le <b>Trésor Public</b>.
+              </p>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Amount */}
-        <div style={{ textAlign: 'center', padding: '24px 0 20px' }}>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 48, fontWeight: 600, color: 'var(--fg-1)', letterSpacing: '-0.02em', lineHeight: 1 }}>
-            {formatAmount(receipt.amount)}
-            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--fg-3)', marginLeft: 8, letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 500 }}>FCFA</span>
+        <section className="section-card px-5 py-6 sm:px-8 rounded-t-none rounded-b-[32px] shadow-elev-2 -mt-1 border-t-0">
+          <div className="flex items-start gap-4 rounded-2xl bg-forest-50 border border-forest-100 px-5 py-4 text-forest-900 shadow-sm">
+            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest-600 text-white shadow-sm">
+              <CheckCircle2 size={22} />
+            </div>
+            <div>
+              <p className="text-[15px] font-bold">Document authentique</p>
+              <p className="mt-1 text-[12px] leading-relaxed text-forest-800 font-medium">
+                Ce paiement a été rapproché et validé. Il constitue une preuve légale de libération de taxe municipale.
+              </p>
+            </div>
           </div>
-          <div style={{ fontSize: 12, color: 'var(--fg-3)', marginTop: 8, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Taxe journalière · avril 2026</div>
-        </div>
 
-        {/* Trésor seal */}
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '12px 16px', background: 'var(--tresor-100)', borderRadius: 12 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/tampon-tresor.svg" alt="Trésor" style={{ width: 44, height: 44 }} />
-          <div style={{ fontSize: 12, color: 'var(--tresor-700)', lineHeight: 1.5 }}>
-            <b>Trésor Public de Côte d&apos;Ivoire</b><br />
-            Enregistrement validé le {receipt.tresorDate}
+          <div className="mt-8">
+            <div className="t-micro text-ink-400 font-bold uppercase tracking-widest mb-4">Détails de la transaction</div>
+            <div className="space-y-1 rounded-2xl border border-ink-100 bg-paper-50/50 p-2">
+              {[
+                ['Date & Heure', receipt.date],
+                ['Contribuable', receipt.contribuable],
+                ['Emplacement', receipt.stall],
+                ['Agent collecteur', receipt.agent],
+                ['Moyen de paiement', receipt.psp],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="flex items-center justify-between gap-4 py-3 px-3 border-b border-ink-100/50 last:border-0"
+                >
+                  <span className="text-[13px] text-ink-500 font-medium uppercase tracking-wider">{label}</span>
+                  <span className="text-right text-[13px] font-bold text-ink-900">{value}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* QR URL hint */}
-        <div style={{ marginTop: 20, textAlign: 'center', fontSize: 11, color: 'var(--fg-4)', fontFamily: 'var(--font-mono)' }}>
-          cocody.ci/v/{id}
+          <div className="py-10 text-center relative">
+            <div className="absolute top-1/2 left-0 right-0 h-px bg-ink-100 -z-10" />
+            <div className="inline-block bg-white px-6">
+              <div className="t-display-xl !text-5xl text-ink-900 mb-1">
+                {formatAmount(receipt.amount)}
+                <span className="ml-3 t-body !text-sm font-bold text-ink-400 uppercase tracking-widest">fcfa</span>
+              </div>
+              <p className="t-micro text-ink-400 font-bold uppercase tracking-[0.15em]">
+                TAXE JOURNALIÈRE · AVRIL 2026
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-2xl bg-tresor-50 border border-tresor-100 px-5 py-4 shadow-sm">
+            <div className="flex items-center gap-4">
+              <div className="bg-white p-1 rounded-lg shadow-sm">
+                <img src="/assets/tampon-tresor.svg" alt="Trésor Public" className="h-12 w-12 shrink-0" />
+              </div>
+              <div className="flex-1">
+                <div className="text-[11px] font-bold text-tresor-600 uppercase tracking-widest mb-1">Rapprochement Bancaire</div>
+                <div className="text-[13px] leading-tight text-tresor-900 font-bold">
+                  Trésor Public de Côte d&apos;Ivoire
+                </div>
+                <div className="text-[11px] text-tresor-700 mt-1 font-mono">
+                  REF: {receipt.tresorRef} · {receipt.tresorDate}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-ink-100 text-center">
+            <p className="font-mono text-[11px] text-ink-400 uppercase tracking-widest">
+              Généré par CoTax · cocody.ci/v/{id}
+            </p>
+          </div>
+        </section>
+        
+        <div className="mt-8 text-center">
+          <Link 
+            href="/portail" 
+            className="text-[13px] font-bold text-ink-400 hover:text-ink-900 transition-colors uppercase tracking-widest"
+          >
+            Accéder au portail fiscal
+          </Link>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

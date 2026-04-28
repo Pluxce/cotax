@@ -33,21 +33,38 @@ export default function TresorPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
           {/* Certification card */}
-          <div className="rounded-lg p-7 text-white border border-white/10" style={{
-            background: 'linear-gradient(135deg, var(--tresor-700), var(--lagune-800))',
-          }}>
-            <div className="flex items-center gap-3 mb-4">
-              <Landmark size={32} strokeWidth={1.5} className="opacity-80" />
-              <div>
-                <div className="text-sm font-semibold">Trésor Public de Côte d'Ivoire</div>
-                <div className="text-xs opacity-60 font-[family-name:var(--font-mono)]">{TRESOR_DATA.certifieRef}</div>
+          <div
+            className="relative overflow-hidden rounded-[16px] p-7 text-white shadow-elev-2"
+            style={{
+              background:
+                'linear-gradient(135deg, #0F2F6B 0%, #0A3A77 60%, #082B57 100%)',
+            }}
+          >
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none opacity-[0.08]"
+              style={{
+                backgroundImage: "url('/assets/pattern-kita.svg')",
+                backgroundSize: '220px',
+                filter: 'brightness(0) invert(1)',
+              }}
+            />
+            <div className="relative z-10 flex items-center gap-3 mb-5">
+              <div className="w-11 h-11 rounded-full bg-white/10 inline-flex items-center justify-center shrink-0">
+                <Landmark size={22} strokeWidth={1.5} />
+              </div>
+              <div className="min-w-0">
+                <div className="text-sm font-semibold truncate">Trésor Public de Côte d&rsquo;Ivoire</div>
+                <div className="text-[11px] tracking-[0.08em] uppercase text-white/70 font-[family-name:var(--font-mono)] mt-0.5">
+                  {TRESOR_DATA.certifieRef}
+                </div>
               </div>
             </div>
-            <div className="font-[family-name:var(--font-display)] text-[40px] font-semibold tracking-[-0.02em] mb-2">
+            <div className="relative z-10 font-[family-name:var(--font-display)] text-[clamp(28px,3.2vw,44px)] leading-none font-semibold tracking-[-0.02em] tabular-nums whitespace-nowrap">
               {formatAmount(TRESOR_DATA.montant)}
-              <span className="font-[family-name:var(--font-ui)] text-sm font-medium opacity-65 ml-2 tracking-[0.06em] uppercase">FCFA</span>
+              <span className="font-[family-name:var(--font-ui)] text-sm font-medium text-white/70 ml-2 tracking-[0.08em] uppercase">FCFA</span>
             </div>
-            <div className="flex items-center gap-2 text-[13px] opacity-75">
+            <div className="relative z-10 mt-4 flex items-center gap-2 text-[13px] text-white/80">
               <CheckCircle size={16} />
               Certifié le {TRESOR_DATA.certifiedAt}
             </div>
@@ -78,32 +95,52 @@ export default function TresorPage() {
         {/* Taux de recouvrement */}
         <Card className="mb-5">
           <CardHead title="Taux de recouvrement" sub="Exercice 2026" />
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div>
-              <div className="font-[family-name:var(--font-display)] text-[40px] sm:text-[48px] font-semibold tracking-[-0.02em] text-terra-700">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="shrink-0">
+              <div className="font-[family-name:var(--font-display)] text-[40px] sm:text-[48px] leading-none font-semibold tracking-[-0.02em] text-terra-700 tabular-nums whitespace-nowrap">
                 {TRESOR_DATA.tauxRecouvrement} %
               </div>
-              <div className="flex items-center gap-2 mt-1.5">
-                <AlertTriangle size={14} className="text-terra-500" />
-                <span className="text-[13px] text-[var(--fg-3)]">
-                  Objectif : {TRESOR_DATA.objectif} % — écart de {(TRESOR_DATA.objectif - TRESOR_DATA.tauxRecouvrement).toFixed(1)} points
+              <div className="flex items-center gap-2 mt-2">
+                <AlertTriangle size={14} className="text-terra-500 shrink-0" />
+                <span className="text-[13px] text-ink-500">
+                  Objectif&nbsp;: {TRESOR_DATA.objectif} % — écart de {(TRESOR_DATA.objectif - TRESOR_DATA.tauxRecouvrement).toFixed(1)} points
                 </span>
               </div>
             </div>
-            <div className="flex-1 w-full">
-              <div className="h-2.5 bg-ink-100 rounded-full overflow-hidden">
+
+            <div className="flex-1 w-full min-w-0">
+              {/* Track */}
+              <div className="relative h-3 rounded-full bg-ink-100 overflow-hidden">
+                {/* Fill */}
                 <div
-                  className="h-full rounded-full"
+                  className="absolute inset-y-0 left-0 rounded-full"
                   style={{
                     width: `${TRESOR_DATA.tauxRecouvrement}%`,
-                    background: 'linear-gradient(to right, var(--lagune-500), var(--forest-500))',
+                    background: 'linear-gradient(to right, #1060B0 0%, #2A9A4C 100%)',
                   }}
                 />
+                {/* Objective marker */}
+                <div
+                  className="absolute top-0 bottom-0 w-px bg-forest-700"
+                  style={{ left: `${TRESOR_DATA.objectif}%` }}
+                />
               </div>
-              <div className="flex justify-between mt-1.5 text-[11px] text-[var(--fg-3)]">
-                <span>0 %</span>
-                <span className="text-terra-700 font-semibold">{TRESOR_DATA.tauxRecouvrement} %</span>
-                <span className="text-forest-600 font-semibold">Objectif {TRESOR_DATA.objectif} %</span>
+
+              {/* Positional labels */}
+              <div className="relative h-5 mt-2 text-[11px] font-[family-name:var(--font-mono)] text-ink-500">
+                <span className="absolute left-0">0 %</span>
+                <span
+                  className="absolute -translate-x-1/2 text-terra-700 font-semibold"
+                  style={{ left: `${TRESOR_DATA.tauxRecouvrement}%` }}
+                >
+                  {TRESOR_DATA.tauxRecouvrement} %
+                </span>
+                <span
+                  className="absolute -translate-x-full text-forest-700 font-semibold whitespace-nowrap"
+                  style={{ left: `${TRESOR_DATA.objectif}%` }}
+                >
+                  Objectif {TRESOR_DATA.objectif} %
+                </span>
               </div>
             </div>
           </div>

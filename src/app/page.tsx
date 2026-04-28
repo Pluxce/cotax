@@ -1,108 +1,96 @@
-import React from 'react'
 import Link from 'next/link'
 import { LayoutDashboard, Smartphone, ShieldCheck } from 'lucide-react'
 
 const ROLES = [
   {
     href: '/admin/dashboard',
-    label: 'Mairie & Administration',
-    sub: 'Tableau de bord, agents, trésor, rapports',
+    label: 'Mairie et administration',
+    sub: 'Tableau de bord, agents, tresor et rapports',
     Icon: LayoutDashboard,
-    bg: 'var(--lagune-500)',
-    roles: ['Maire', 'Adjoint', 'Régisseur', 'Directeur de la Recette'],
+    bg: 'bg-lagune-500',
+    roles: ['Maire', 'Adjoint', 'Regisseur', 'Directeur de recette'],
   },
   {
     href: '/portail',
-    label: 'Portail Commerçant',
-    sub: 'Mes taxes, mes reçus, paiement mobile',
+    label: 'Portail commercant',
+    sub: 'Taxes, recus et paiement mobile',
     Icon: Smartphone,
-    bg: 'var(--forest-600)',
-    roles: ['Commerçant', 'Assujetti'],
+    bg: 'bg-forest-600',
+    roles: ['Commercant', 'Assujetti'],
   },
   {
     href: '/v/1847',
-    label: 'Vérification de reçu',
-    sub: 'Contrôle public d\'authenticité d\'un reçu',
+    label: 'Verification de recu',
+    sub: "Controle public d'authenticite d'un recu",
     Icon: ShieldCheck,
-    bg: 'var(--tresor-500)',
-    roles: ['Public', 'Contrôleur'],
+    bg: 'bg-tresor-500',
+    roles: ['Public', 'Controleur'],
   },
 ]
 
-export default function LoginPage() {
+export default function HomePage() {
   return (
-    <div style={{
-      minHeight: '100vh', background: 'var(--ink-950)',
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      padding: '40px 24px', position: 'relative', overflow: 'hidden',
-    }}>
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: "url('/assets/pattern-kita.svg')",
-        backgroundSize: 240, opacity: 0.05,
-        filter: 'brightness(0) invert(1)', pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', top: '20%', left: '50%', transform: 'translateX(-50%)',
-        width: 'min(600px, 90vw)', height: 'min(400px, 60vw)', borderRadius: '50%',
-        background: 'radial-gradient(ellipse, rgba(16,96,176,0.25) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12, position: 'relative', zIndex: 1, flexWrap: 'wrap', justifyContent: 'center', textAlign: 'center' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/logo-cocody.png" alt="Cocody" style={{ width: 60, height: 60, borderRadius: 14, background: 'rgba(255,255,255,0.92)', padding: 4 }} />
-        <div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 30, fontWeight: 600, color: '#fff', letterSpacing: '-0.01em' }}>CoTax Cocody</div>
-          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 2 }}>Plateforme de digitalisation fiscale</div>
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 48, position: 'relative', zIndex: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <div style={{ display: 'flex', overflow: 'hidden', borderRadius: 4, width: 36, height: 24 }}>
-          <div style={{ flex: 1, background: '#FF8200' }} />
-          <div style={{ flex: 1, background: '#fff' }} />
-          <div style={{ flex: 1, background: '#009A44' }} />
-        </div>
-        <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)' }}>République de Côte d&apos;Ivoire</span>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, maxWidth: 900, width: '100%', position: 'relative', zIndex: 1 }}>
-        {ROLES.map(r => (
-          <Link key={r.href} href={r.href} style={{
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.10)',
-            borderRadius: 20, padding: '28px 28px 24px',
-            textDecoration: 'none', display: 'flex', flexDirection: 'column',
-            minWidth: 0,
-          }}>
-            <div style={{ width: 52, height: 52, borderRadius: 14, background: r.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-              <r.Icon size={24} strokeWidth={1.5} style={{ color: '#fff' }} />
+    <main className="min-h-screen bg-ink-900 text-white px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-[1160px] flex-col justify-center">
+        <section className="bg-gradient-to-br from-lagune-900 to-lagune-700 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12 rounded-2xl">
+          <div className="relative z-[1] flex flex-wrap items-center gap-4">
+            <img
+              src="/assets/logo-cocody.png"
+              alt="Logo Cocody"
+              className="h-16 w-16 rounded-2xl bg-white p-1.5"
+            />
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ocre-500">
+                Commune de Cocody
+              </p>
+              <h1 className="mt-2 font-display text-3xl font-semibold tracking-normal sm:text-4xl">
+                CoTax Cocody
+              </h1>
+              <p className="mt-3 max-w-[680px] text-sm leading-6 text-white/75 sm:text-[15px]">
+                Point d&apos;entree unique pour le pilotage fiscal municipal, le portail contribuable et la verification des recus.
+              </p>
             </div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 600, color: '#fff', marginBottom: 6, letterSpacing: '-0.01em', overflowWrap: 'anywhere' }}>
-              {r.label}
-            </div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.5, marginBottom: 20 }}>
-              {r.sub}
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 'auto' }}>
-              {r.roles.map(role => (
-                <span key={role} style={{
-                  fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 999,
-                  background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)',
-                  letterSpacing: '0.04em', textTransform: 'uppercase',
-                }}>
-                  {role}
-                </span>
-              ))}
-            </div>
-          </Link>
-        ))}
-      </div>
+          </div>
 
-      <div style={{ marginTop: 48, fontSize: 12, color: 'rgba(255,255,255,0.25)', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-        Commune de Cocody · Exercice 2026 · Délibération N°2025-172/CC/CM/SG
+          <div className="relative z-[1] mt-8 flex flex-wrap items-center gap-3 text-[12px] text-white/65">
+            <img src="/assets/drapeau-ci.svg" alt="Drapeau CI" className="h-5 w-auto rounded-sm" />
+            <span>Exercice 2026</span>
+            <span className="hidden sm:inline">Deliberation Ndeg 2025-172/CC/CM/SG</span>
+          </div>
+        </section>
+
+        <section className="mt-5 grid gap-4 md:grid-cols-3">
+          {ROLES.map((role) => (
+            <Link
+              key={role.href}
+              href={role.href}
+              className="flex min-h-[240px] flex-col rounded-2xl border border-white/10 bg-white/6 p-6 no-underline transition-transform hover:-translate-y-0.5 hover:border-white/20"
+            >
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${role.bg}`}>
+                <role.Icon size={22} strokeWidth={1.6} className="text-white" />
+              </div>
+              <h2 className="mt-5 font-display text-[1.35rem] font-semibold text-white">
+                {role.label}
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-white/65">{role.sub}</p>
+              <div className="mt-auto flex flex-wrap gap-2 pt-6">
+                {role.roles.map((label) => (
+                  <span
+                    key={label}
+                    className="rounded-full border border-white/10 bg-white/8 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-white/70"
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          ))}
+        </section>
+
+        <p className="mt-6 text-center text-[12px] text-white/35">
+          Commune de Cocody · Plateforme de digitalisation fiscale
+        </p>
       </div>
-    </div>
+    </main>
   )
 }
