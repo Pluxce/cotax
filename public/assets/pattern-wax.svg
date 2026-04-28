@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Motif wax (décoratif)">
+  <defs>
+    <pattern id="wax" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <rect width="60" height="60" fill="transparent"></rect>
+      
+      <g transform="translate(30 30)">
+        <g opacity="0.65" fill="currentColor">
+          <path d="M0 -18 L3.5 -5 L18 0 L3.5 5 L0 18 L-3.5 5 L-18 0 L-3.5 -5 Z"></path>
+        </g>
+        <circle r="3.5" fill="currentColor" opacity="0.9"></circle>
+      </g>
+      
+      <circle cx="0" cy="0" r="3" fill="currentColor" opacity="0.4"></circle>
+      <circle cx="60" cy="0" r="3" fill="currentColor" opacity="0.4"></circle>
+      <circle cx="0" cy="60" r="3" fill="currentColor" opacity="0.4"></circle>
+      <circle cx="60" cy="60" r="3" fill="currentColor" opacity="0.4"></circle>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#wax)" color="#0B4F3C"></rect>
+</svg>

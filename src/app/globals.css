@@ -1,49 +1,242 @@
+@import 'tailwindcss';
+
+/* ─── Design-system tokens exposed to Tailwind v4 ─── */
+@theme {
+  /* Lagune (primary blue) */
+  --color-lagune-950: #06203F;
+  --color-lagune-900: #082B57;
+  --color-lagune-800: #0A3A77;
+  --color-lagune-700: #0C4A96;
+  --color-lagune-600: #0E55A6;
+  --color-lagune-500: #1060B0;
+  --color-lagune-400: #3A82C4;
+  --color-lagune-300: #74A6D7;
+  --color-lagune-200: #B0CAE7;
+  --color-lagune-100: #DDE7F2;
+  --color-lagune-50:  #EEF3F9;
+
+  /* Forest (green) */
+  --color-forest-950: #002810;
+  --color-forest-900: #004018;
+  --color-forest-700: #007028;
+  --color-forest-600: #008030;
+  --color-forest-500: #2A9A4C;
+  --color-forest-400: #5CB477;
+  --color-forest-200: #BEE3C8;
+  --color-forest-100: #DEF1E4;
+  --color-forest-50:  #EEF8F1;
+
+  /* Ocre (amber) */
+  --color-ocre-900: #6B4510;
+  --color-ocre-700: #B07418;
+  --color-ocre-500: #E8A33D;
+  --color-ocre-300: #F0C87A;
+  --color-ocre-100: #FBEAC9;
+
+  /* Terra (red) */
+  --color-terra-900: #631D15;
+  --color-terra-700: #8F2E22;
+  --color-terra-600: #A93A2C;
+  --color-terra-500: #C44536;
+  --color-terra-400: #D46A5D;
+  --color-terra-100: #F7DBD6;
+  --color-terra-50:  #FCEEEB;
+
+  /* Ink (neutral) */
+  --color-ink-950: #0A0F15;
+  --color-ink-900: #121821;
+  --color-ink-800: #1E2631;
+  --color-ink-700: #3A4352;
+  --color-ink-600: #525B6A;
+  --color-ink-500: #6B7583;
+  --color-ink-400: #8B94A1;
+  --color-ink-300: #B8BDC7;
+  --color-ink-200: #D6DAE1;
+  --color-ink-100: #E7EAEF;
+  --color-ink-50:  #F1F2F5;
+
+  /* Paper */
+  --color-paper-50: #F6F7F9;
+  --color-paper-0:  #FFFFFF;
+
+  /* Trésor */
+  --color-tresor-700: #0F2F6B;
+  --color-tresor-500: #1F4A99;
+  --color-tresor-100: #D5DFEE;
+
+  /* Border radius */
+  --radius-sm:   6px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-elev-1: 0 1px 2px rgba(18,24,33,0.06), 0 1px 1px rgba(18,24,33,0.04);
+  --shadow-elev-2: 0 4px 8px rgba(18,24,33,0.08), 0 2px 4px rgba(18,24,33,0.04);
+  --shadow-elev-3: 0 12px 24px rgba(18,24,33,0.12), 0 4px 8px rgba(18,24,33,0.06);
+
+  /* Fonts */
+  --font-display: var(--font-display);
+  --font-ui:      var(--font-ui);
+  --font-mono:    var(--font-mono);
+
+  /* Layout */
+  --spacing-nav-h:     64px;
+  --spacing-sidebar-w: 260px;
+}
+
+/* ─── CSS custom properties (kept for components using var()) ─── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --lagune-950: #06203F;
+  --lagune-900: #082B57;
+  --lagune-800: #0A3A77;
+  --lagune-700: #0C4A96;
+  --lagune-600: #0E55A6;
+  --lagune-500: #1060B0;
+  --lagune-400: #3A82C4;
+  --lagune-300: #74A6D7;
+  --lagune-200: #B0CAE7;
+  --lagune-100: #DDE7F2;
+  --lagune-50:  #EEF3F9;
+
+  --forest-950: #002810;
+  --forest-900: #004018;
+  --forest-700: #007028;
+  --forest-600: #008030;
+  --forest-500: #2A9A4C;
+  --forest-400: #5CB477;
+  --forest-200: #BEE3C8;
+  --forest-100: #DEF1E4;
+  --forest-50:  #EEF8F1;
+
+  --ocre-900: #6B4510;
+  --ocre-700: #B07418;
+  --ocre-500: #E8A33D;
+  --ocre-300: #F0C87A;
+  --ocre-100: #FBEAC9;
+
+  --terra-900: #631D15;
+  --terra-700: #8F2E22;
+  --terra-600: #A93A2C;
+  --terra-500: #C44536;
+  --terra-400: #D46A5D;
+  --terra-100: #F7DBD6;
+  --terra-50:  #FCEEEB;
+
+  --ink-950: #0A0F15;
+  --ink-900: #121821;
+  --ink-800: #1E2631;
+  --ink-700: #3A4352;
+  --ink-600: #525B6A;
+  --ink-500: #6B7583;
+  --ink-400: #8B94A1;
+  --ink-300: #B8BDC7;
+  --ink-200: #D6DAE1;
+  --ink-100: #E7EAEF;
+  --ink-50:  #F1F2F5;
+
+  --paper-50: #F6F7F9;
+  --paper-0:  #FFFFFF;
+
+  --tresor-700: #0F2F6B;
+  --tresor-500: #1F4A99;
+  --tresor-100: #D5DFEE;
+
+  --bg:          var(--paper-50);
+  --bg-surface:  var(--paper-0);
+  --bg-sunken:   var(--ink-50);
+
+  --fg-1: var(--ink-900);
+  --fg-2: var(--ink-700);
+  --fg-3: var(--ink-500);
+  --fg-4: var(--ink-400);
+
+  --border:        var(--ink-200);
+  --border-strong: var(--ink-300);
+  --border-subtle: rgba(16, 96, 176, 0.10);
+
+  --primary:       var(--lagune-500);
+  --primary-hover: var(--lagune-600);
+  --primary-on:    #FFFFFF;
+
+  --secondary:       var(--forest-600);
+  --secondary-hover: var(--forest-700);
+  --secondary-on:    #FFFFFF;
+
+  --r-sm:   6px;
+  --r-md:  12px;
+  --r-lg:  16px;
+  --r-xl:  24px;
+  --r-pill: 999px;
+
+  --elev-1: 0 1px 2px rgba(18,24,33,0.06), 0 1px 1px rgba(18,24,33,0.04);
+  --elev-2: 0 4px 8px rgba(18,24,33,0.08), 0 2px 4px rgba(18,24,33,0.04);
+  --elev-3: 0 12px 24px rgba(18,24,33,0.12), 0 4px 8px rgba(18,24,33,0.06);
+
+  --ease-standard: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+
+  --nav-h:     64px;
+  --sidebar-w: 260px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme="dark"] {
+  --bg:          var(--ink-950);
+  --bg-surface:  #121A25;
+  --bg-sunken:   #0A0F15;
+  --fg-1:        #EEF2F8;
+  --fg-2:        #C3CAD3;
+  --fg-3:        #8B94A1;
+  --fg-4:        #6B7583;
+  --border:        #2A3340;
+  --border-strong: #3A4352;
+  --border-subtle: rgba(238,242,248,0.06);
+  --primary:       var(--lagune-400);
+  --primary-hover: var(--lagune-300);
+  --primary-on:    var(--ink-950);
+  --elev-1: 0 1px 2px rgba(0,0,0,0.45);
+  --elev-2: 0 6px 14px rgba(0,0,0,0.55);
+  --elev-3: 0 18px 36px rgba(0,0,0,0.6);
 }
 
-html {
-  height: 100%;
-}
+html, body { height: 100%; }
+html { overflow-x: clip; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img, video, iframe, svg { max-width: 100%; }
 
-html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg-1);
+  font-size: 15px;
+  line-height: 22px;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--lagune-500);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+@keyframes live-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

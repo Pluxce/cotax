@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Mairie de Cocody">
+  
+  <defs>
+    <clipPath id="shield">
+      <path d="M120 12 L212 36 L212 120 C212 172 172 212 120 228 C68 212 28 172 28 120 L28 36 Z"></path>
+    </clipPath>
+  </defs>
+  <path d="M120 12 L212 36 L212 120 C212 172 172 212 120 228 C68 212 28 172 28 120 L28 36 Z" fill="#F7F5F0" stroke="#0B4F3C" stroke-width="4"></path>
+  <g clip-path="url(#shield)">
+    
+    <rect x="0" y="12" width="240" height="64" fill="#0B4F3C"></rect>
+    
+    <rect x="0" y="76" width="240" height="10" fill="#E8A33D"></rect>
+    
+    <circle cx="120" cy="128" r="26" fill="#E8A33D"></circle>
+    
+    <path d="M28 172 Q60 160 92 172 T156 172 T220 172 L220 200 L28 200 Z" fill="#1B8F6E"></path>
+    <path d="M28 184 Q60 174 92 184 T156 184 T220 184 L220 212 L28 212 Z" fill="#0F6B52" opacity="0.85"></path>
+  </g>
+  
+  <path d="M120 44 L125 58 L140 58 L128 67 L133 81 L120 72 L107 81 L112 67 L100 58 L115 58 Z" fill="#F7F5F0"></path>
+  <text x="120" y="220" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="14" font-weight="600" fill="#0B4F3C" letter-spacing="2">COCODY</text>
+</svg>
